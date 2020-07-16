@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:f2k/blocs/productbloc/products_bloc.dart';
 import 'package:f2k/repos/model/Product.dart';
 import 'package:f2k/ui/pages/Product/ProductDetail.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
@@ -93,7 +94,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                 clipBehavior: Clip.antiAliasWithSaveLayer,
                 child: CachedNetworkImage(
                     imageUrl:
-                        "https://images.unsplash.com/photo-1594397606420-a132b153ff04?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=40",
+                        "https://images.unsplash.com/photo-1550081699-79c1c2e48a77?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80",
                     fit: BoxFit.fill,
                     width: double.infinity,
                     progressIndicatorBuilder:

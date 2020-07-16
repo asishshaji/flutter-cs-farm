@@ -6,6 +6,7 @@ import 'package:f2k/repos/model/Offers.dart';
 import 'package:f2k/repos/model/Product.dart';
 import 'package:f2k/ui/pages/Login.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 
@@ -22,6 +23,7 @@ void main() async {
   Hive.registerAdapter(OfferAdapter());
   Hive.registerAdapter(ProductAdapter());
   runApp(MyApp());
+  SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);
 }
 
 class MyApp extends StatelessWidget {

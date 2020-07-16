@@ -1,20 +1,109 @@
 import 'package:f2k/repos/model/Product.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class ProductDetailScreen extends StatelessWidget {
+class ProductDetailScreen extends StatefulWidget {
   final Product product;
   const ProductDetailScreen({Key key, this.product}) : super(key: key);
+
+  @override
+  _ProductDetailScreenState createState() => _ProductDetailScreenState();
+}
+
+class _ProductDetailScreenState extends State<ProductDetailScreen> {
+  TextEditingController _nameController;
+  TextEditingController _phoneController = new TextEditingController();
+  TextEditingController _addressController = new TextEditingController();
+  TextEditingController _quantityController = new TextEditingController();
+
+  String userName;
+  String phoneNumber;
+  double quantity;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    FirebaseAuth.instance.currentUser().then((value) {
+      setState(() {
+        userName = value.displayName;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    _nameController = new TextEditingController(text: userName);
+
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          // Add your onPressed code here!
+          showModalBottomSheet(
+              isScrollControlled: true,
+              enableDrag: true,
+              context: context,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(40),
+                      topRight: Radius.circular(40))),
+              builder: (context) {
+                return Container(
+                  height: height * 0.8,
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 15, horizontal: 8),
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          height: 5,
+                          width: 40,
+                          decoration: BoxDecoration(
+                              color: Colors.grey[700],
+                              borderRadius: BorderRadius.circular(10)),
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        buildTextField(width, _nameController,
+                            Icons.person_outline, "A", TextInputType.text),
+                        buildTextField(width, _phoneController, Icons.phone,
+                            "Phone Number", TextInputType.phone),
+                        buildTextField(width, _addressController, Icons.home,
+                            "Address", TextInputType.multiline),
+                        buildTextField(width, _quantityController,
+                            Icons.view_module, "Items", TextInputType.number),
+                        SizedBox(
+                          height: 40,
+                        ),
+                        Container(
+                          width: width * 0.9,
+                          height: 50,
+                          child: RaisedButton(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(7.0),
+                            ),
+                            onPressed: () {},
+                            color: Colors.green[500],
+                            textColor: Colors.white,
+                            child: Text("Place order".toUpperCase(),
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontFamily: "Merriweather",
+                                )),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              });
         },
-        label: Text('Buy Now'),
+        label: Text(
+          'Buy Now',
+          style: TextStyle(fontFamily: "Merriweather", color: Colors.white),
+        ),
         icon: Icon(Icons.shopping_cart),
         backgroundColor: Colors.green[500],
       ),
@@ -37,11 +126,11 @@ class ProductDetailScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12.0),
               child: Text(
-                product.name,
+                widget.product.name,
                 style: TextStyle(
                     fontFamily: "Merriweather",
                     fontSize: 26,
-                    fontWeight: FontWeight.w700),
+                    fontWeight: FontWeight.w800),
               ),
             ),
             SizedBox(
@@ -56,7 +145,7 @@ class ProductDetailScreen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(right: 10),
                     child: Text(
-                      product.price,
+                      widget.product.price,
                       style: TextStyle(
                           fontFamily: "Merriweather",
                           fontSize: 26,
@@ -73,7 +162,7 @@ class ProductDetailScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: Text(
-                product.details,
+                widget.product.details,
                 style: TextStyle(
                     fontSize: 16,
                     color: Colors.grey[700],
@@ -84,6 +173,34 @@ class ProductDetailScreen extends StatelessWidget {
               height: 30,
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Theme buildTextField(double width, TextEditingController controller,
+      IconData icon, String hintText, TextInputType textInputType) {
+    return Theme(
+      data: new ThemeData(
+        primaryColor: Colors.green,
+        primaryColorDark: Colors.greenAccent,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
+        child: Container(
+          width: width * 0.9,
+          child: TextField(
+            keyboardType: textInputType,
+            style:
+                TextStyle(color: Colors.grey[700], fontFamily: "Merriweather"),
+            decoration: InputDecoration(
+                hintText: hintText,
+                border: OutlineInputBorder(
+                  gapPadding: 5,
+                ),
+                prefixIcon: Icon(icon)),
+            controller: controller,
+          ),
         ),
       ),
     );
@@ -100,7 +217,7 @@ class ProductDetailScreen extends StatelessWidget {
         children: <Widget>[
           Expanded(
               child: Center(
-                  child: Text(product.count.toString(),
+                  child: Text(widget.product.count.toString(),
                       style: TextStyle(
                           fontSize: 16,
                           fontFamily: "Merriweather",
