@@ -1,6 +1,8 @@
 import 'package:f2k/repos/model/Product.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:toast/toast.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final Product product;
@@ -21,7 +23,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   double quantity;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     FirebaseAuth.instance.currentUser().then((value) {
@@ -39,73 +40,18 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          showModalBottomSheet(
-              isScrollControlled: true,
-              enableDrag: true,
-              context: context,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(40),
-                      topRight: Radius.circular(40))),
-              builder: (context) {
-                return Container(
-                  height: height * 0.8,
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 15, horizontal: 8),
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          height: 5,
-                          width: 40,
-                          decoration: BoxDecoration(
-                              color: Colors.grey[700],
-                              borderRadius: BorderRadius.circular(10)),
-                        ),
-                        SizedBox(
-                          height: 30,
-                        ),
-                        buildTextField(width, _nameController,
-                            Icons.person_outline, "A", TextInputType.text),
-                        buildTextField(width, _phoneController, Icons.phone,
-                            "Phone Number", TextInputType.phone),
-                        buildTextField(width, _addressController, Icons.home,
-                            "Address", TextInputType.multiline),
-                        buildTextField(width, _quantityController,
-                            Icons.view_module, "Items", TextInputType.number),
-                        SizedBox(
-                          height: 40,
-                        ),
-                        Container(
-                          width: width * 0.9,
-                          height: 50,
-                          child: RaisedButton(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(7.0),
-                            ),
-                            onPressed: () {},
-                            color: Colors.green[500],
-                            textColor: Colors.white,
-                            child: Text("Place order".toUpperCase(),
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontFamily: "Merriweather",
-                                )),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                );
-              });
+        onPressed: () async {
+          final box = await Hive.openBox("Cart");
+          box.add(widget.product);
+          Toast.show("${widget.product.name} added to cart", context,
+              gravity: Toast.BOTTOM);
         },
         label: Text(
-          'Buy Now',
+          'Add to cart'.toUpperCase(),
           style: TextStyle(fontFamily: "Merriweather", color: Colors.white),
         ),
-        icon: Icon(Icons.shopping_cart),
-        backgroundColor: Colors.green[500],
+        icon: Icon(Icons.add_shopping_cart),
+        backgroundColor: Colors.green[400],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -114,6 +60,20 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             Container(
               height: height * 0.4,
               decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey[400],
+                    blurRadius: 25.0, // soften the shadow
+                    spreadRadius: 5.0, //extend the shadow
+                    offset: Offset(
+                      15.0, // Move to right 10  horizontally
+                      15.0, // Move to bottom 10 Vertically
+                    ),
+                  )
+                ],
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(50),
+                    bottomRight: Radius.circular(50)),
                 image: DecorationImage(
                     fit: BoxFit.cover,
                     image: NetworkImage(
@@ -150,7 +110,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           fontFamily: "Merriweather",
                           fontSize: 26,
                           fontWeight: FontWeight.bold,
-                          color: Colors.green[500]),
+                          color: Colors.green[400]),
                     ),
                   )
                 ],
@@ -182,7 +142,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       IconData icon, String hintText, TextInputType textInputType) {
     return Theme(
       data: new ThemeData(
-        primaryColor: Colors.green,
+        primaryColor: Colors.green[400],
         primaryColorDark: Colors.greenAccent,
       ),
       child: Padding(
@@ -226,9 +186,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(9),
-                  bottomRight: Radius.circular(9)),
-              color: Colors.green[500],
+                  bottomLeft: Radius.circular(7),
+                  bottomRight: Radius.circular(7)),
+              color: Colors.green[400],
             ),
             child: Center(
                 child: Text(

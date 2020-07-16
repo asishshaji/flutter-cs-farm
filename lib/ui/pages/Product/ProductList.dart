@@ -1,12 +1,9 @@
 import 'dart:ui';
 
-import 'package:animations/animations.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:f2k/blocs/productbloc/products_bloc.dart';
-import 'package:f2k/repos/OffersRepo.dart';
 import 'package:f2k/repos/model/Product.dart';
 import 'package:f2k/ui/pages/Product/ProductDetail.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
@@ -38,6 +35,28 @@ class _ProductListScreenState extends State<ProductListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          centerTitle: true,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Colors.grey[700],
+            ),
+          ),
+          title: Text(
+            widget.category,
+            style: TextStyle(
+                fontFamily: "Merriweather",
+                color: Colors.grey[700],
+                fontWeight: FontWeight.bold,
+                fontSize: 24),
+          ),
+        ),
         body: BlocBuilder<ProductsBloc, ProductsState>(
           builder: (BuildContext context, ProductsState state) {
             if (state is ProductLoadingState) {
@@ -50,7 +69,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
               products.clear();
               products = state.loadedProducts;
               return LiquidPullToRefresh(
-                color: Colors.green[600],
+                color: Colors.green[400],
                 springAnimationDurationInMilliseconds: 500,
                 onRefresh: _handleRefresh, // refresh callback
                 child: buildStaggeredGridView(products), // scroll view
@@ -59,7 +78,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
               products.clear();
               products = state.loadedProducts;
               return LiquidPullToRefresh(
-                color: Colors.green[600],
+                color: Colors.green[400],
                 springAnimationDurationInMilliseconds: 500,
                 onRefresh: _handleRefresh, // refresh callback
                 child: buildStaggeredGridView(products), // scroll view
@@ -78,7 +97,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
     return StaggeredGridView.countBuilder(
       crossAxisCount: 2,
       itemCount: products.length,
-      padding: EdgeInsets.symmetric(vertical: 40, horizontal: 10),
+      padding: EdgeInsets.symmetric(vertical: 30, horizontal: 10),
       itemBuilder: (BuildContext context, int index) =>
           buildProductCard(products[index]),
       staggeredTileBuilder: (int index) =>
@@ -134,10 +153,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
             child: Text(
               product.name,
               textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 20,
-                  fontFamily: "Merriweather",
-                  color: Colors.white),
+              style: TextStyle(fontSize: 20, color: Colors.white),
             ),
           ),
           Positioned(

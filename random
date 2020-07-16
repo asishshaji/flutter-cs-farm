@@ -1,0 +1,59 @@
+showModalBottomSheet(
+              isScrollControlled: true,
+              enableDrag: true,
+              context: context,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(40),
+                      topRight: Radius.circular(40))),
+              builder: (context) {
+                return Container(
+                  height: height * 0.8,
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 15, horizontal: 8),
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          height: 5,
+                          width: 40,
+                          decoration: BoxDecoration(
+                              color: Colors.grey[700],
+                              borderRadius: BorderRadius.circular(10)),
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        buildTextField(width, _nameController,
+                            Icons.person_outline, "A", TextInputType.text),
+                        buildTextField(width, _phoneController, Icons.phone,
+                            "Phone Number", TextInputType.phone),
+                        buildTextField(width, _addressController, Icons.home,
+                            "Address", TextInputType.multiline),
+                        buildTextField(width, _quantityController,
+                            Icons.view_module, "Items", TextInputType.number),
+                        SizedBox(
+                          height: 40,
+                        ),
+                        Container(
+                          width: width * 0.9,
+                          height: 50,
+                          child: RaisedButton(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(7.0),
+                            ),
+                            onPressed: () {},
+                            color: Colors.green[400],
+                            textColor: Colors.white,
+                            child: Text("Place order".toUpperCase(),
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontFamily: "Merriweather",
+                                )),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              });
