@@ -25,6 +25,16 @@ class ProductLoadedState extends ProductsState {
   List<Object> get props => [loadedProducts];
 }
 
+class ProductRefreshedState extends ProductsState {
+  final List<dynamic> loadedProducts;
+
+  ProductRefreshedState({this.loadedProducts});
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [loadedProducts];
+}
+
 class ProductLoadingFailedState extends ProductsState {
   @override
   // TODO: implement props

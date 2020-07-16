@@ -38,6 +38,7 @@ dependencies:
   path_provider: ^1.6.11
  
   cached_network_image: ^2.2.0+1
+  liquid_pull_to_refresh: ^2.0.0
 
 
   # The following adds the Cupertino Icons font to your application.

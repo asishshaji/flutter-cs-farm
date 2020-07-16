@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:animations/animations.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:f2k/blocs/productbloc/products_bloc.dart';
+import 'package:f2k/repos/OffersRepo.dart';
 import 'package:f2k/repos/model/Product.dart';
 import 'package:f2k/ui/pages/Product/ProductDetail.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,6 +12,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 class ProductListScreen extends StatefulWidget {
   final String category;
@@ -23,6 +25,7 @@ class ProductListScreen extends StatefulWidget {
 
 class _ProductListScreenState extends State<ProductListScreen> {
   ProductsBloc _productsBloc;
+  List<dynamic> products = List<dynamic>();
   @override
   void initState() {
     super.initState();
@@ -44,12 +47,31 @@ class _ProductListScreenState extends State<ProductListScreen> {
                 ),
               );
             } else if (state is ProductLoadedState) {
-              List<dynamic> products = state.loadedProducts;
-              return buildStaggeredGridView(products);
+              products.clear();
+              products = state.loadedProducts;
+              return LiquidPullToRefresh(
+                color: Colors.green[600],
+                springAnimationDurationInMilliseconds: 500,
+                onRefresh: _handleRefresh, // refresh callback
+                child: buildStaggeredGridView(products), // scroll view
+              );
+            } else if (state is ProductRefreshedState) {
+              products.clear();
+              products = state.loadedProducts;
+              return LiquidPullToRefresh(
+                color: Colors.green[600],
+                springAnimationDurationInMilliseconds: 500,
+                onRefresh: _handleRefresh, // refresh callback
+                child: buildStaggeredGridView(products), // scroll view
+              );
             }
           },
           bloc: _productsBloc,
         ));
+  }
+
+  Future<void> _handleRefresh() async {
+    _productsBloc.add(ProductRefreshEvent(widget.category));
   }
 
   StaggeredGridView buildStaggeredGridView(List<dynamic> products) {

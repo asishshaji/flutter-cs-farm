@@ -3,7 +3,6 @@ import 'package:equatable/equatable.dart';
 import 'package:f2k/repos/model/Offers.dart';
 import 'package:f2k/res/AppString.dart';
 import 'package:f2k/services/HiveService.dart';
-import 'package:flutter/rendering.dart';
 import 'package:http/http.dart' as http;
 
 class OffersRepo extends Equatable {

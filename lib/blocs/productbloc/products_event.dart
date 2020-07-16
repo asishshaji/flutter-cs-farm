@@ -19,3 +19,12 @@ class ProductStartEvent extends ProductsEvent {
   // TODO: implement props
   List<Object> get props => [category];
 }
+
+class ProductRefreshEvent extends ProductsEvent {
+  final String category;
+
+  ProductRefreshEvent(this.category);
+  @override
+  // TODO: implement props
+  List<Object> get props => [category];
+}
