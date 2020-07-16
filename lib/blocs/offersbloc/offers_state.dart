@@ -10,7 +10,7 @@ class OffersInitial extends OffersState {
 }
 
 class OffersLoadedState extends OffersState {
-  final List<Offer> loadedOffers;
+  final List<dynamic> loadedOffers;
 
   OffersLoadedState({this.loadedOffers});
   @override

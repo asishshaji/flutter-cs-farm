@@ -36,7 +36,6 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint(context.hashCode.toString());
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,19 +49,28 @@ class _HomeState extends State<Home> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    "Hey ${widget.user.displayName.split(" ")[0]},",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 32,
-                        fontFamily: "Merriweather",
-                        color: Colors.grey[700]),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        "Hey ${widget.user.displayName.split(" ")[0]},",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 32,
+                            fontFamily: "Merriweather",
+                            color: Colors.grey[700]),
+                      ),
+                      CircleAvatar(
+                        radius: 26,
+                        backgroundImage: NetworkImage(widget.user.photoUrl),
+                      )
+                    ],
                   ),
                   Text(
-                    "Find fresh products",
+                    "Find fresh products🍄🍉",
                     style: TextStyle(
                         fontFamily: "Merriweather",
-                        fontSize: 26,
+                        fontSize: 24,
                         color: Colors.grey[700]),
                   ),
                 ],
@@ -81,7 +89,7 @@ class _HomeState extends State<Home> {
                     ),
                   );
                 } else if (state is OffersLoadedState) {
-                  List<Offer> offers = state.loadedOffers;
+                  List<dynamic> offers = state.loadedOffers;
 
                   return CarouselSlider(
                     options: CarouselOptions(
@@ -119,6 +127,19 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 CategoryList(),
+                Padding(
+                  padding: const EdgeInsets.all(14.0),
+                  child: Text(
+                    "Best Selling",
+                    style: TextStyle(
+                        color: Colors.grey[700],
+                        fontFamily: "Merriweather",
+                        fontSize: 32),
+                  ),
+                ),
+                SizedBox(
+                  height: 30,
+                )
               ],
             ),
           )

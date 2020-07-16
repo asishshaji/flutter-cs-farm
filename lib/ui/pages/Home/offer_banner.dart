@@ -48,6 +48,22 @@ class Offers extends StatelessWidget {
                     fontSize: 26),
               ),
             ),
+            Positioned(
+              bottom: 20,
+              right: 20,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Colors.white),
+                child: Text(
+                  "See more >",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, fontFamily: "Merriweather"),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            )
           ],
         ),
       ),

@@ -20,7 +20,7 @@ class OffersBloc extends Bloc<OffersEvent, OffersState> {
   ) async* {
     // TODO: implement mapEventToState
     if (event is GetOffers) {
-      List<Offer> offers = await _repo.getOffer();
+      List<dynamic> offers = await _repo.getOffer();
 
       yield OffersLoadedState(loadedOffers: offers);
     }

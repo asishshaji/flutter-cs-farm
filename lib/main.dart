@@ -3,6 +3,7 @@ import 'package:f2k/repos/OffersRepo.dart';
 import 'package:f2k/repos/ProductRepo.dart';
 import 'package:f2k/repos/UserRepo.dart';
 import 'package:f2k/repos/model/Offers.dart';
+import 'package:f2k/repos/model/Product.dart';
 import 'package:f2k/ui/pages/Login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,6 +20,7 @@ void main() async {
       await path_provider.getApplicationDocumentsDirectory();
   Hive.init(appDocumentDirectory.path);
   Hive.registerAdapter(OfferAdapter());
+  Hive.registerAdapter(ProductAdapter());
   runApp(MyApp());
 }
 
@@ -40,6 +42,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => OffersBloc(repo: offersRepo)),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         home: Login(),
       ),

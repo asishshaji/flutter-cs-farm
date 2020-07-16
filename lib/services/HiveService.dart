@@ -10,7 +10,6 @@ class HiveService {
   }
 
   static addBoxes<T>(List<T> items, String boxName) async {
-    debugPrint("Adding box $boxName");
     final openBox = await Hive.openBox(boxName);
     for (var item in items) {
       openBox.add(item);

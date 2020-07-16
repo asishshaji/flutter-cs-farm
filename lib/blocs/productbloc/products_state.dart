@@ -16,7 +16,7 @@ class ProductLoadingState extends ProductsState {
 }
 
 class ProductLoadedState extends ProductsState {
-  final List<Product> loadedProducts;
+  final List<dynamic> loadedProducts;
 
   ProductLoadedState({this.loadedProducts});
 

@@ -20,7 +20,7 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
     ProductsEvent event,
   ) async* {
     if (event is ProductStartEvent) {
-      List<Product> products =
+      List<dynamic> products =
           await _productRepository.getProductsByCategory(event.category);
       yield ProductLoadedState(loadedProducts: products);
     } else if (event is ProductLoadingEvent) {

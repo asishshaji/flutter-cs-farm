@@ -1,4 +1,5 @@
 import 'package:f2k/ui/pages/Product/ProductList.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CategoryCard extends StatelessWidget {
@@ -17,7 +18,9 @@ class CategoryCard extends StatelessWidget {
         children: <Widget>[
           InkWell(
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (_) {
+              Navigator.push(context, CupertinoPageRoute(builder: (
+                BuildContext context,
+              ) {
                 return ProductListScreen(category: title);
               }));
             },
