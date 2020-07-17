@@ -67,6 +67,18 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: Colors.green[400],
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (BuildContext context) => OrderScreen()));
+        },
+        label: Text(
+          "View Cart".toUpperCase(),
+          style: TextStyle(fontFamily: "Merriweather"),
+        ),
+        icon: Icon(Icons.shopping_basket),
+      ),
       key: _scaffoldKey,
       drawer: CurvedDrawer(
         color: Colors.white,

@@ -95,16 +95,19 @@ class _OrderScreenState extends State<OrderScreen> {
           },
           child: Row(
             children: <Widget>[
-              Container(
-                height: 150,
-                width: 150,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: NetworkImage(
-                          "https://images.unsplash.com/photo-1550081699-79c1c2e48a77?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80",
-                        )),
-                    borderRadius: BorderRadius.circular(10)),
+              Hero(
+                tag: order.product.sId,
+                child: Container(
+                  height: 150,
+                  width: 150,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: NetworkImage(
+                            "https://images.unsplash.com/photo-1550081699-79c1c2e48a77?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80",
+                          )),
+                      borderRadius: BorderRadius.circular(10)),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -138,16 +141,36 @@ class _OrderScreenState extends State<OrderScreen> {
                             style: TextStyle(
                                 fontFamily: "Merriweather",
                                 fontSize: 18,
-                                fontWeight: FontWeight.w600))
+                                fontWeight: FontWeight.w600)),
                       ],
                     ),
+                    RichText(
+                        text: TextSpan(
+                            text: 'Price',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18,
+                                fontFamily: "Merriweather"),
+                            children: <TextSpan>[
+                          TextSpan(
+                            text:
+                                "   ₹ ${double.parse(order.orderCount) * double.parse(order.product.price.split("\$")[1])}",
+                            style: TextStyle(
+                                fontFamily: "Merriweather",
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600),
+                          )
+                        ])),
                     Flexible(
                       child: Align(
                         alignment: Alignment.bottomLeft,
                         child: OutlineButton.icon(
+                          focusColor: Colors.green[400],
+                          hoverColor: Colors.green[400],
+                          highlightedBorderColor: Colors.green[400],
                           onPressed: () => _deleteItem(index),
                           icon: Icon(Icons.delete_outline),
-                          label: Text("Delete item"),
+                          label: Text("Remove"),
                         ),
                       ),
                     )

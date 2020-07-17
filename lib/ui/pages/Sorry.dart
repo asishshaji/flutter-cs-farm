@@ -36,9 +36,16 @@ class ErrorSorry extends StatelessWidget {
           SizedBox(
             height: 20,
           ),
-          Text(
-            msg,
-            style: TextStyle(fontFamily: "Merriweather", fontSize: 26),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 30),
+            child: Text(
+              msg,
+              style: TextStyle(
+                fontFamily: "Merriweather",
+                fontSize: 26,
+              ),
+              textAlign: TextAlign.center,
+            ),
           ),
         ],
       ),

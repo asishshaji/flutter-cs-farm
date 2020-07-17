@@ -81,10 +81,24 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                   orderCount: quantity,
                                   product: widget.product);
                               final box = await Hive.openBox("Cart");
-                              box.add(order);
-                              Toast.show("${widget.product.name} added to cart",
+                              bool inCart = false;
+                              for (var val in box.values) {
+                                if (val.product.sId == order.product.sId)
+                                  inCart = true;
+                              }
+                              if (!inCart) {
+                                box.add(order);
+                                Toast.show(
+                                    "${widget.product.name} added to cart",
+                                    context,
+                                    gravity: Toast.BOTTOM);
+                              }
+                              Toast.show(
+                                  "${widget.product.name} already in cart",
                                   context,
+                                  duration: Toast.LENGTH_LONG,
                                   gravity: Toast.BOTTOM);
+
                               Navigator.pop(context);
                             },
                             color: Colors.green[400],
@@ -113,27 +127,30 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Container(
-              height: height * 0.4,
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey[400],
-                    blurRadius: 25.0, // soften the shadow
-                    spreadRadius: 5.0, //extend the shadow
-                    offset: Offset(
-                      15.0, // Move to right 10  horizontally
-                      15.0, // Move to bottom 10 Vertically
-                    ),
-                  )
-                ],
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(50),
-                    bottomRight: Radius.circular(50)),
-                image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: NetworkImage(
-                        "https://images.unsplash.com/photo-1550081699-79c1c2e48a77?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80")),
+            Hero(
+              tag: "${widget.product.sId}",
+              child: Container(
+                height: height * 0.4,
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey[400],
+                      blurRadius: 25.0, // soften the shadow
+                      spreadRadius: 5.0, //extend the shadow
+                      offset: Offset(
+                        15.0, // Move to right 10  horizontally
+                        15.0, // Move to bottom 10 Vertically
+                      ),
+                    )
+                  ],
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(50),
+                      bottomRight: Radius.circular(50)),
+                  image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(
+                          "https://images.unsplash.com/photo-1550081699-79c1c2e48a77?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80")),
+                ),
               ),
             ),
             SizedBox(

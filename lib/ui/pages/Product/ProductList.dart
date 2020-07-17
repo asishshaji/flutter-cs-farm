@@ -132,30 +132,36 @@ class _ProductListScreenState extends State<ProductListScreen> {
                       Colors.grey[700]
                     ]).createShader(bounds);
               },
-              child: Card(
-                semanticContainer: true,
-                clipBehavior: Clip.antiAliasWithSaveLayer,
-                child: CachedNetworkImage(
-                    imageUrl:
-                        "https://images.unsplash.com/photo-1550081699-79c1c2e48a77?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80",
-                    fit: BoxFit.fill,
-                    width: double.infinity,
-                    progressIndicatorBuilder:
-                        (context, url, downloadProgress) => Center(
-                              child: CircularProgressIndicator(
-                                  value: downloadProgress.progress),
-                            )),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
+              child: Hero(
+                tag: "${product.sId}",
+                child: Card(
+                  semanticContainer: true,
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  elevation: 1,
+                  child: CachedNetworkImage(
+                      imageUrl:
+                          "https://images.unsplash.com/photo-1550081699-79c1c2e48a77?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80",
+                      fit: BoxFit.fill,
+                      width: double.infinity,
+                      progressIndicatorBuilder:
+                          (context, url, downloadProgress) => Center(
+                                child: CircularProgressIndicator(
+                                    value: downloadProgress.progress),
+                              )),
                 ),
-                elevation: 1,
               )),
           Align(
             alignment: Alignment.center,
             child: Text(
               product.name,
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 20, color: Colors.white),
+              style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                  fontFamily: "Merriweather"),
             ),
           ),
           Positioned(
