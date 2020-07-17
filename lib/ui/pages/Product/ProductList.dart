@@ -4,8 +4,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:f2k/blocs/productbloc/products_bloc.dart';
 import 'package:f2k/repos/model/Product.dart';
 import 'package:f2k/ui/pages/Product/ProductDetail.dart';
+import 'package:f2k/ui/pages/Sorry.dart';
 import 'package:flutter/cupertino.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -23,6 +23,7 @@ class ProductListScreen extends StatefulWidget {
 class _ProductListScreenState extends State<ProductListScreen> {
   ProductsBloc _productsBloc;
   List<dynamic> products = List<dynamic>();
+
   @override
   void initState() {
     super.initState();
@@ -68,6 +69,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
             } else if (state is ProductLoadedState) {
               products.clear();
               products = state.loadedProducts;
+              if (products.length == 0) return ErrorSorry(msg: "Coming Soon");
               return LiquidPullToRefresh(
                 color: Colors.green[400],
                 springAnimationDurationInMilliseconds: 500,

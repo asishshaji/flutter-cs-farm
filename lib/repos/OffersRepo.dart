@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 import 'package:f2k/repos/model/Offers.dart';
 import 'package:f2k/res/AppString.dart';

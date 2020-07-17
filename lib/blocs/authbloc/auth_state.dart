@@ -12,6 +12,7 @@ class Authenticated extends AuthState {
   final FirebaseUser user;
 
   Authenticated({@required this.user});
+
   @override
   // TODO: implement props
   List<Object> get props => [user];
@@ -21,6 +22,7 @@ class AuthenticationFailure extends AuthState {
   final String errorMessage;
 
   AuthenticationFailure({@required this.errorMessage});
+
   @override
   // TODO: implement props
   List<Object> get props => [errorMessage];

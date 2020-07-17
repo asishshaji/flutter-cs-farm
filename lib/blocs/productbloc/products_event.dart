@@ -24,6 +24,7 @@ class ProductRefreshEvent extends ProductsEvent {
   final String category;
 
   ProductRefreshEvent(this.category);
+
   @override
   // TODO: implement props
   List<Object> get props => [category];

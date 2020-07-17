@@ -1,11 +1,13 @@
+import 'package:f2k/repos/model/Orders.dart';
 import 'package:f2k/repos/model/Product.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:f2k/ui/pages/BuildTextField.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:toast/toast.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final Product product;
+
   const ProductDetailScreen({Key key, this.product}) : super(key: key);
 
   @override
@@ -13,38 +15,92 @@ class ProductDetailScreen extends StatefulWidget {
 }
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
-  TextEditingController _nameController;
-  TextEditingController _phoneController = new TextEditingController();
-  TextEditingController _addressController = new TextEditingController();
   TextEditingController _quantityController = new TextEditingController();
 
-  String userName;
   String phoneNumber;
   double quantity;
+
   @override
   void initState() {
     super.initState();
-
-    FirebaseAuth.instance.currentUser().then((value) {
-      setState(() {
-        userName = value.displayName;
-      });
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    _nameController = new TextEditingController(text: userName);
 
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
-          final box = await Hive.openBox("Cart");
-          box.add(widget.product);
-          Toast.show("${widget.product.name} added to cart", context,
-              gravity: Toast.BOTTOM);
+          showModalBottomSheet(
+              isScrollControlled: true,
+              enableDrag: true,
+              context: context,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(40),
+                      topRight: Radius.circular(40))),
+              builder: (context) {
+                return Container(
+                  height: height * 0.5,
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 15, horizontal: 8),
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          height: 5,
+                          width: 40,
+                          decoration: BoxDecoration(
+                              color: Colors.grey[700],
+                              borderRadius: BorderRadius.circular(10)),
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        BuildTextField(
+                            width: width,
+                            controller: _quantityController,
+                            icon: Icons.view_module,
+                            hintText: "Quantity",
+                            textInputType: TextInputType.number),
+                        SizedBox(
+                          height: 40,
+                        ),
+                        Container(
+                          width: width * 0.9,
+                          height: 50,
+                          child: RaisedButton(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(7.0),
+                            ),
+                            onPressed: () async {
+                              String quantity = _quantityController.text;
+                              Order order = Order(
+                                  orderCount: quantity,
+                                  product: widget.product);
+                              final box = await Hive.openBox("Cart");
+                              box.add(order);
+                              Toast.show("${widget.product.name} added to cart",
+                                  context,
+                                  gravity: Toast.BOTTOM);
+                              Navigator.pop(context);
+                            },
+                            color: Colors.green[400],
+                            textColor: Colors.white,
+                            child: Text("Add to cart".toUpperCase(),
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontFamily: "Merriweather",
+                                )),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              });
         },
         label: Text(
           'Add to cart'.toUpperCase(),
@@ -133,34 +189,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               height: 30,
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Theme buildTextField(double width, TextEditingController controller,
-      IconData icon, String hintText, TextInputType textInputType) {
-    return Theme(
-      data: new ThemeData(
-        primaryColor: Colors.green[400],
-        primaryColorDark: Colors.greenAccent,
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
-        child: Container(
-          width: width * 0.9,
-          child: TextField(
-            keyboardType: textInputType,
-            style:
-                TextStyle(color: Colors.grey[700], fontFamily: "Merriweather"),
-            decoration: InputDecoration(
-                hintText: hintText,
-                border: OutlineInputBorder(
-                  gapPadding: 5,
-                ),
-                prefixIcon: Icon(icon)),
-            controller: controller,
-          ),
         ),
       ),
     );

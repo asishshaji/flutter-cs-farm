@@ -4,12 +4,16 @@ import 'package:f2k/blocs/offersbloc/offers_bloc.dart';
 import 'package:f2k/blocs/productbloc/products_bloc.dart';
 import 'package:f2k/ui/pages/Home/CategoryList.dart';
 import 'package:f2k/ui/pages/Home/offer_banner.dart';
+import 'package:f2k/ui/pages/Orders.dart';
+import 'package:f2k/ui/pages/Profile.dart';
+import 'package:f2k/ui/pages/RecipeScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Home extends StatefulWidget {
   final FirebaseUser user;
+
   Home({Key key, @required this.user}) : super(key: key);
 
   @override
@@ -21,6 +25,7 @@ class _HomeState extends State<Home> {
   OffersBloc _offersBloc;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   int index = 0;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -33,7 +38,10 @@ class _HomeState extends State<Home> {
 
   List<DrawerItem> _drawerItems = <DrawerItem>[
     DrawerItem(icon: Icon(Icons.home), label: "Home"),
-    DrawerItem(icon: Icon(Icons.person_outline), label: "Profile"),
+    DrawerItem(
+      icon: Icon(Icons.person_outline),
+      label: "Profile",
+    ),
     DrawerItem(
         icon: Icon(
           Icons.shopping_cart,
@@ -63,12 +71,23 @@ class _HomeState extends State<Home> {
       drawer: CurvedDrawer(
         color: Colors.white,
         labelColor: Colors.black54,
-        width: 75.0,
+        width: 72.0,
         items: _drawerItems,
         onTap: (newIndex) {
           setState(() {
             index = newIndex;
           });
+          if (index == 0) {
+          } else if (index == 2) {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (BuildContext context) => OrderScreen()));
+          } else if (index == 1) {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (BuildContext context) => ProfileScreen()));
+          } else if (index == 3) {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (BuildContext context) => RecipeScreen()));
+          }
         },
       ),
       backgroundColor: Colors.white,
@@ -100,15 +119,12 @@ class _HomeState extends State<Home> {
                             onTap: () {
                               _scaffoldKey.currentState.openDrawer();
                             },
-                            child: Container(
-                              height: 60,
-                              width: 60,
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image:
-                                          NetworkImage(widget.user.photoUrl)),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10))),
+                            child: Padding(
+                              padding: EdgeInsets.only(right: 20),
+                              child: Icon(
+                                Icons.menu,
+                                size: 34,
+                              ),
                             )),
                       ],
                     ),

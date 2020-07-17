@@ -13,6 +13,7 @@ class OffersLoadedState extends OffersState {
   final List<dynamic> loadedOffers;
 
   OffersLoadedState({this.loadedOffers});
+
   @override
   // TODO: implement props
   List<Object> get props => throw UnimplementedError();
