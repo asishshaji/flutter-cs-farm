@@ -92,12 +92,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                     "${widget.product.name} added to cart",
                                     context,
                                     gravity: Toast.BOTTOM);
-                              }
-                              Toast.show(
-                                  "${widget.product.name} already in cart",
-                                  context,
-                                  duration: Toast.LENGTH_LONG,
-                                  gravity: Toast.BOTTOM);
+                              } else
+                                Toast.show(
+                                    "${widget.product.name} already in cart",
+                                    context,
+                                    duration: Toast.LENGTH_LONG,
+                                    gravity: Toast.BOTTOM);
 
                               Navigator.pop(context);
                             },

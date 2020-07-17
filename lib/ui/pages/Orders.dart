@@ -23,8 +23,9 @@ class _OrderScreenState extends State<OrderScreen> {
   TextEditingController _nameController;
   TextEditingController _phoneController = new TextEditingController();
   TextEditingController _addressController = new TextEditingController();
-
+  List<double> priceList = new List();
   String userName;
+  double totalPrice = 0.0;
 
   @override
   void initState() {
@@ -44,13 +45,43 @@ class _OrderScreenState extends State<OrderScreen> {
   _getOrderFromHive() async {
     final openBox = await Hive.openBox("Cart");
     List<dynamic> temp = new List<dynamic>();
+    List<double> tempPrices = new List();
 
     print("Loading from Hive");
     for (int i = 0; i < openBox.length; i++) {
-      temp.add(openBox.getAt(i));
+      var box = openBox.getAt(i);
+      temp.add(box);
+      tempPrices.add(double.parse(box.orderCount) *
+          double.parse(box.product.price.split("\$")[1]));
     }
+    double sum = tempPrices.fold(0, (p, c) => p + c);
     setState(() {
       orders = temp;
+      priceList = tempPrices;
+      totalPrice = sum;
+    });
+  }
+
+  _deleteItem(int index) async {
+    final openBox = await Hive.openBox("Cart");
+    openBox.deleteAt(index);
+
+    List<dynamic> temp = new List<dynamic>();
+    List<double> tempPrices = new List();
+
+    for (int i = 0; i < openBox.length; i++) {
+      var box = openBox.getAt(i);
+
+      temp.add(box);
+      tempPrices.add(double.parse(box.orderCount) *
+          double.parse(box.product.price.split("\$")[1]));
+    }
+    double sum = tempPrices.fold(0, (p, c) => p + c);
+
+    setState(() {
+      orders = temp;
+      priceList = tempPrices;
+      totalPrice = sum;
     });
   }
 
@@ -153,8 +184,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                 fontFamily: "Merriweather"),
                             children: <TextSpan>[
                           TextSpan(
-                            text:
-                                "   ₹ ${double.parse(order.orderCount) * double.parse(order.product.price.split("\$")[1])}",
+                            text: "   ₹ ${priceList[index]}",
                             style: TextStyle(
                                 fontFamily: "Merriweather",
                                 fontSize: 18,
@@ -249,7 +279,33 @@ class _OrderScreenState extends State<OrderScreen> {
                           hintText: "Address",
                           textInputType: TextInputType.multiline),
                       SizedBox(
-                        height: 40,
+                        height: 20,
+                      ),
+                      RichText(
+                          text: TextSpan(
+                              text: 'Net Price',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 18,
+                                  fontFamily: "Merriweather"),
+                              children: <TextSpan>[
+                            TextSpan(
+                              text: "   ₹ ${totalPrice}",
+                              style: TextStyle(
+                                  fontFamily: "Merriweather",
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600),
+                            )
+                          ])),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        "You can pay on delivery via cash or UPI.",
+                        style: TextStyle(fontFamily: "Merriweather"),
+                      ),
+                      SizedBox(
+                        height: 30,
                       ),
                       Container(
                         width: width * 0.9,
@@ -297,19 +353,5 @@ class _OrderScreenState extends State<OrderScreen> {
       icon: Icon(Icons.shopping_basket),
       backgroundColor: Colors.green[400],
     );
-  }
-
-  _deleteItem(int index) async {
-    final openBox = await Hive.openBox("Cart");
-    openBox.deleteAt(index);
-
-    List<dynamic> temp = new List<dynamic>();
-
-    for (int i = 0; i < openBox.length; i++) {
-      temp.add(openBox.getAt(i));
-    }
-    setState(() {
-      orders = temp;
-    });
   }
 }
