@@ -246,7 +246,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                 buyerName: _nameController.text,
                                 phoneNumber: _phoneController.text,
                                 userOrders: orderJson);
-                            // debugPrint(finalOrder.toJson());
+                            debugPrint(finalOrder.toJson());
                             http.Response response = await http.post(
                                 Uri.encodeFull(AppString.orderUrl),
                                 body: finalOrder,

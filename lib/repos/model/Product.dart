@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 part 'Product.g.dart';
@@ -22,19 +23,17 @@ class Product {
   String benifits;
   @HiveField(7)
   String farmId;
-  @HiveField(8)
-  int iV;
 
-  Product(
-      {this.category,
-      this.sId,
-      this.name,
-      this.price,
-      this.count,
-      this.details,
-      this.benifits,
-      this.farmId,
-      this.iV});
+  Product({
+    this.category,
+    this.sId,
+    this.name,
+    this.price,
+    this.count,
+    this.details,
+    this.benifits,
+    this.farmId,
+  });
 
   Map<String, dynamic> toMap() {
     return {
@@ -46,7 +45,6 @@ class Product {
       'details': details,
       'benifits': benifits,
       'farmId': farmId,
-      'iV': iV,
     };
   }
 
@@ -62,11 +60,30 @@ class Product {
       details: map['details'],
       benifits: map['benifits'],
       farmId: map['farmId'],
-      iV: map['iV'],
     );
   }
 
-  String toJson() => json.encode(toMap());
+  Product.fromJson(Map<String, dynamic> json) {
+    category = json['category'];
+    sId = json['_id'];
+    name = json['name'];
+    price = json['price'];
+    count = json['count'];
+    details = json['details'];
+    benifits = json['benifits'];
+    farmId = json['farmId'];
+  }
 
-  static Product fromJson(String source) => fromMap(json.decode(source));
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['category'] = this.category;
+    data['_id'] = this.sId;
+    data['name'] = this.name;
+    data['price'] = this.price;
+    data['count'] = this.count;
+    data['details'] = this.details;
+    data['benifits'] = this.benifits;
+    data['farmId'] = this.farmId;
+    return data;
+  }
 }

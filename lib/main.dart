@@ -24,7 +24,7 @@ void main() async {
   Hive.registerAdapter(ProductAdapter());
   Hive.registerAdapter(OrderAdapter());
   runApp(MyApp());
-  SystemChrome.setEnabledSystemUIOverlays([]);
+  SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);
 }
 
 class MyApp extends StatelessWidget {
@@ -46,6 +46,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => OffersBloc(repo: offersRepo)),
       ],
       child: MaterialApp(
+        title: "Farm to home",
         debugShowCheckedModeBanner: false,
         home: Login(),
       ),
