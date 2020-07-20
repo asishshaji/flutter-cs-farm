@@ -4,7 +4,7 @@ class FinalOrder {
   String buyerName;
   String phoneNumber;
   String address;
-  List<String> userOrders;
+  List<dynamic> userOrders;
 
   FinalOrder({
     this.buyerName,

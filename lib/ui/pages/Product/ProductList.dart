@@ -63,7 +63,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
             if (state is ProductLoadingState) {
               return Center(
                 child: CircularProgressIndicator(
-                  backgroundColor: Colors.red,
+                  backgroundColor: Colors.green[400],
                 ),
               );
             } else if (state is ProductLoadedState) {
@@ -103,7 +103,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
       itemBuilder: (BuildContext context, int index) =>
           buildProductCard(products[index]),
       staggeredTileBuilder: (int index) =>
-          new StaggeredTile.count(1, index.isEven ? 1.5 : 1.3),
+          new StaggeredTile.count(1, index.isEven ? 1.3 : 1.2),
       mainAxisSpacing: 8,
       crossAxisSpacing: 8,
     );
@@ -121,45 +121,46 @@ class _ProductListScreenState extends State<ProductListScreen> {
       child: Stack(
         fit: StackFit.expand,
         children: [
-          ShaderMask(
+          Hero(
+            tag: "${product.sId}",
+            child: ShaderMask(
               shaderCallback: (Rect bounds) {
                 return LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [
-                      Colors.black,
-                      Colors.grey[200],
-                      Colors.grey[700]
+                      Colors.grey[600],
+                      Colors.grey[700],
+                      Colors.grey[600],
                     ]).createShader(bounds);
               },
-              child: Hero(
-                tag: "${product.sId}",
-                child: Card(
-                  semanticContainer: true,
-                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  elevation: 1,
-                  child: CachedNetworkImage(
-                      imageUrl:
-                          "https://images.unsplash.com/photo-1550081699-79c1c2e48a77?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80",
-                      fit: BoxFit.fill,
-                      width: double.infinity,
-                      progressIndicatorBuilder:
-                          (context, url, downloadProgress) => Center(
-                                child: CircularProgressIndicator(
-                                    value: downloadProgress.progress),
-                              )),
+              child: Card(
+                semanticContainer: true,
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
                 ),
-              )),
+                elevation: 4,
+                child: CachedNetworkImage(
+                    imageUrl: product.imageurl,
+                    fit: BoxFit.contain,
+                    width: double.infinity,
+                    progressIndicatorBuilder:
+                        (context, url, downloadProgress) => Center(
+                              child: CircularProgressIndicator(
+                                  backgroundColor: Colors.green[400],
+                                  value: downloadProgress.progress),
+                            )),
+              ),
+            ),
+          ),
           Align(
             alignment: Alignment.center,
             child: Text(
               product.name,
               textAlign: TextAlign.center,
               style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 18,
                   color: Colors.white,
                   fontFamily: "Merriweather"),
             ),
@@ -172,11 +173,11 @@ class _ProductListScreenState extends State<ProductListScreen> {
               child: Align(
                 alignment: Alignment.bottomRight,
                 child: Text(
-                  product.price,
+                  "₹ ${product.price}",
                   style: TextStyle(
                       fontFamily: "Merriweather",
                       color: Colors.white,
-                      fontSize: 17,
+                      fontSize: 15,
                       fontWeight: FontWeight.w600),
                 ),
               ),

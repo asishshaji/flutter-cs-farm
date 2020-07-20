@@ -14,7 +14,7 @@ class CategoryCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           InkWell(
             onTap: () {
@@ -35,6 +35,14 @@ class CategoryCard extends StatelessWidget {
                 image,
                 height: 100,
               ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 4.0),
+            child: Text(
+              title,
+              style: TextStyle(
+                  fontFamily: "Merriweather", color: Colors.grey[700]),
             ),
           ),
         ],

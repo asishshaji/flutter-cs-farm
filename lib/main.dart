@@ -24,7 +24,7 @@ void main() async {
   Hive.registerAdapter(ProductAdapter());
   Hive.registerAdapter(OrderAdapter());
   runApp(MyApp());
-  SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);
+  SystemChrome.setEnabledSystemUIOverlays([]);
 }
 
 class MyApp extends StatelessWidget {

@@ -3,6 +3,7 @@ import 'package:curved_drawer/curved_drawer.dart';
 import 'package:f2k/blocs/offersbloc/offers_bloc.dart';
 import 'package:f2k/blocs/productbloc/products_bloc.dart';
 import 'package:f2k/ui/pages/Home/CategoryList.dart';
+import 'package:f2k/ui/pages/Home/JoinUsCard.dart';
 import 'package:f2k/ui/pages/Home/offer_banner.dart';
 import 'package:f2k/ui/pages/Orders.dart';
 import 'package:f2k/ui/pages/Profile.dart';
@@ -159,7 +160,7 @@ class _HomeState extends State<Home> {
                   if (state is OffersInitial) {
                     return Center(
                       child: CircularProgressIndicator(
-                        backgroundColor: Colors.red,
+                        backgroundColor: Colors.green[400],
                       ),
                     );
                   } else if (state is OffersLoadedState) {
@@ -208,18 +209,12 @@ class _HomeState extends State<Home> {
                     height: 15,
                   ),
                   CategoryList(),
-                  Padding(
-                    padding: const EdgeInsets.all(14.0),
-                    child: Text(
-                      "Best Selling",
-                      style: TextStyle(
-                          color: Colors.grey[700],
-                          fontFamily: "Merriweather",
-                          fontSize: 32),
-                    ),
-                  ),
                   SizedBox(
-                    height: 30,
+                    height: 15,
+                  ),
+                  JoinUsCard(),
+                  SizedBox(
+                    height: 80,
                   )
                 ],
               ),

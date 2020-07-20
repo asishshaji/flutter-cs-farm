@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:f2k/repos/model/Orders.dart';
 import 'package:f2k/repos/model/Product.dart';
 import 'package:f2k/ui/pages/BuildTextField.dart';
@@ -80,26 +81,32 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               Order order = Order(
                                   orderCount: quantity,
                                   product: widget.product);
-                              final box = await Hive.openBox("Cart");
-                              bool inCart = false;
-                              for (var val in box.values) {
-                                if (val.product.sId == order.product.sId)
-                                  inCart = true;
-                              }
-                              if (!inCart) {
-                                box.add(order);
-                                Toast.show(
-                                    "${widget.product.name} added to cart",
-                                    context,
-                                    gravity: Toast.BOTTOM);
-                              } else
-                                Toast.show(
-                                    "${widget.product.name} already in cart",
-                                    context,
+                              if (int.parse(quantity) <= widget.product.count) {
+                                final box = await Hive.openBox("Cart");
+                                bool inCart = false;
+                                for (var val in box.values) {
+                                  if (val.product.sId == order.product.sId)
+                                    inCart = true;
+                                }
+                                if (!inCart) {
+                                  box.add(order);
+                                  Toast.show(
+                                      "${widget.product.name} added to cart",
+                                      context,
+                                      gravity: Toast.BOTTOM);
+                                } else
+                                  Toast.show(
+                                      "${widget.product.name} already in cart",
+                                      context,
+                                      duration: Toast.LENGTH_LONG,
+                                      gravity: Toast.BOTTOM);
+
+                                Navigator.pop(context);
+                              } else {
+                                Toast.show("Check your quantity", context,
                                     duration: Toast.LENGTH_LONG,
                                     gravity: Toast.BOTTOM);
-
-                              Navigator.pop(context);
+                              }
                             },
                             color: Colors.green[400],
                             textColor: Colors.white,
@@ -128,31 +135,23 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Hero(
-              tag: "${widget.product.sId}",
-              child: Container(
-                height: height * 0.4,
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey[400],
-                      blurRadius: 25.0, // soften the shadow
-                      spreadRadius: 5.0, //extend the shadow
-                      offset: Offset(
-                        15.0, // Move to right 10  horizontally
-                        15.0, // Move to bottom 10 Vertically
-                      ),
-                    )
-                  ],
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(50),
-                      bottomRight: Radius.circular(50)),
-                  image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(
-                          "https://images.unsplash.com/photo-1550081699-79c1c2e48a77?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80")),
-                ),
-              ),
-            ),
+                tag: "${widget.product.sId}",
+                child: CachedNetworkImage(
+                  imageUrl: widget.product.imageurl,
+                  imageBuilder: (context, imageProvider) => Container(
+                    height: height * 0.4,
+                    decoration: BoxDecoration(
+                      border: Border.all(width: 0.3, color: Colors.grey[400]),
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(50),
+                          bottomRight: Radius.circular(50)),
+                      image: DecorationImage(
+                          image: imageProvider, fit: BoxFit.cover),
+                    ),
+                  ),
+                  placeholder: (context, url) => CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+                )),
             SizedBox(
               height: 20,
             ),
@@ -178,7 +177,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   Padding(
                     padding: const EdgeInsets.only(right: 10),
                     child: Text(
-                      widget.product.price,
+                      "₹ ${widget.product.price}",
                       style: TextStyle(
                           fontFamily: "Merriweather",
                           fontSize: 26,
@@ -203,7 +202,33 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               ),
             ),
             SizedBox(
-              height: 30,
+              height: 15,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Text(
+                "Benifits",
+                style: TextStyle(
+                    fontSize: 22,
+                    color: Colors.black,
+                    fontFamily: "Merriweather"),
+              ),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Text(
+                widget.product.benifits,
+                style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.grey[700],
+                    fontFamily: "Merriweather"),
+              ),
+            ),
+            SizedBox(
+              height: 50,
             ),
           ],
         ),

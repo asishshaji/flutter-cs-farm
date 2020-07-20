@@ -28,11 +28,11 @@ class CategoryList extends StatelessWidget {
             title: "Vegetable",
             colors: [Colors.green[100], Colors.greenAccent[200]],
           ),
-          CategoryCard(image: "assets/images/beef.png", title: "Meat", colors: [
-            Colors.red[200],
-            Colors.redAccent[200],
-            Colors.pinkAccent[200]
-          ]),
+          CategoryCard(
+            image: "assets/images/poultry.png",
+            title: "Poultry",
+            colors: [Colors.grey[100], Colors.grey[300]],
+          ),
         ],
       ),
     );

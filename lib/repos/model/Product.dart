@@ -23,6 +23,8 @@ class Product {
   String benifits;
   @HiveField(7)
   String farmId;
+  @HiveField(8)
+  String imageurl;
 
   Product({
     this.category,
@@ -33,6 +35,7 @@ class Product {
     this.details,
     this.benifits,
     this.farmId,
+    this.imageurl,
   });
 
   Map<String, dynamic> toMap() {
@@ -45,6 +48,7 @@ class Product {
       'details': details,
       'benifits': benifits,
       'farmId': farmId,
+      'imageurl': imageurl
     };
   }
 
@@ -52,15 +56,15 @@ class Product {
     if (map == null) return null;
 
     return Product(
-      category: map['category'],
-      sId: map['sId'],
-      name: map['name'],
-      price: map['price'],
-      count: map['count'],
-      details: map['details'],
-      benifits: map['benifits'],
-      farmId: map['farmId'],
-    );
+        category: map['category'],
+        sId: map['sId'],
+        name: map['name'],
+        price: map['price'],
+        count: map['count'],
+        details: map['details'],
+        benifits: map['benifits'],
+        farmId: map['farmId'],
+        imageurl: map['imageurl']);
   }
 
   Product.fromJson(Map<String, dynamic> json) {
@@ -72,6 +76,7 @@ class Product {
     details = json['details'];
     benifits = json['benifits'];
     farmId = json['farmId'];
+    imageurl = json['imageurl'];
   }
 
   Map<String, dynamic> toJson() {
@@ -84,6 +89,7 @@ class Product {
     data['details'] = this.details;
     data['benifits'] = this.benifits;
     data['farmId'] = this.farmId;
+    data['imageurl'] = this.imageurl;
     return data;
   }
 }
