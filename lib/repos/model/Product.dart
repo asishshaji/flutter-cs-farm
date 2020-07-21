@@ -1,6 +1,3 @@
-import 'dart:convert';
-
-import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 part 'Product.g.dart';

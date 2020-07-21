@@ -53,16 +53,6 @@ class _HomeState extends State<Home> {
           Icons.style,
         ),
         label: "Recipes"),
-    DrawerItem(
-        icon: Icon(
-          Icons.notifications_none,
-        ),
-        label: "Notifications"),
-    DrawerItem(
-        icon: Icon(
-          Icons.style,
-        ),
-        label: "Recipes"),
   ];
 
   @override
@@ -179,8 +169,7 @@ class _HomeState extends State<Home> {
                       ),
                       items: offers.map((offer) {
                         return Offers(
-                          imageurl: offer.imageurl,
-                          title: offer.title,
+                          offer: offer,
                         );
                       }).toList(),
                     );

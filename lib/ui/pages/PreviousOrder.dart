@@ -29,15 +29,11 @@ class _PreviousOrdersScreenState extends State<PreviousOrdersScreen> {
     final openBox = await Hive.openBox("Orders");
     List<dynamic> temp = new List<dynamic>();
 
-    print(openBox.length);
-    for (int i = 0; i < openBox.length; i++) {
+    for (int i = openBox.length - 1; i > 0; i--) {
       var box = openBox.getAt(i);
-      debugPrint(box[0].orderCount);
-
-      // temp.add(box);
+      temp.add(box);
     }
 
-    debugPrint(temp[0].orderCount);
     setState(() {
       orders = temp;
     });
@@ -46,7 +42,6 @@ class _PreviousOrdersScreenState extends State<PreviousOrdersScreen> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: Container(
@@ -68,30 +63,36 @@ class _PreviousOrdersScreenState extends State<PreviousOrdersScreen> {
       child: Container(
         width: width,
         height: 150,
-        child: Row(
+        child: Column(
           children: <Widget>[
-            InkWell(
-              onTap: () {
-                Navigator.push(context, CupertinoPageRoute(builder: (
-                  BuildContext context,
-                ) {
-                  return ProductDetailScreen(product: order.product);
-                }));
-              },
-              child: Hero(
-                tag: order.product.sId,
-                child: CachedNetworkImage(
-                  imageUrl: order.product.imageurl,
-                  imageBuilder: (context, imageProvider) => Container(
-                    height: 150,
-                    width: 150,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                            fit: BoxFit.cover, image: imageProvider),
-                        borderRadius: BorderRadius.circular(10)),
+            Row(
+              children: <Widget>[
+                InkWell(
+                  onTap: () {
+                    Navigator.push(context, CupertinoPageRoute(builder: (
+                      BuildContext context,
+                    ) {
+                      return ProductDetailScreen(product: order.product);
+                    }));
+                  },
+                  child: Hero(
+                    tag: order.product.sId,
+                    child: CachedNetworkImage(
+                      imageUrl: order.product.imageurl,
+                      imageBuilder: (context, imageProvider) => Container(
+                        height: 150,
+                        width: 150,
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                                fit: BoxFit.cover, image: imageProvider),
+                            borderRadius: BorderRadius.circular(10)),
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                Text(order.product.name),
+                Text(order.orderCount),
+              ],
             ),
           ],
         ),

@@ -9,7 +9,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 class ProductListScreen extends StatefulWidget {
   final String category;
@@ -36,6 +35,20 @@ class _ProductListScreenState extends State<ProductListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
+        floatingActionButton: Container(
+          height: 65,
+          width: 65,
+          child: FloatingActionButton(
+            child: Icon(
+              Icons.refresh,
+              size: 26,
+            ),
+            backgroundColor: Colors.green[400],
+            onPressed: () {
+              _productsBloc.add(ProductRefreshEvent(widget.category));
+            },
+          ),
+        ),
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Colors.transparent,
@@ -70,21 +83,11 @@ class _ProductListScreenState extends State<ProductListScreen> {
               products.clear();
               products = state.loadedProducts;
               if (products.length == 0) return ErrorSorry(msg: "Coming Soon");
-              return LiquidPullToRefresh(
-                color: Colors.green[400],
-                springAnimationDurationInMilliseconds: 500,
-                onRefresh: _handleRefresh, // refresh callback
-                child: buildStaggeredGridView(products), // scroll view
-              );
+              return buildStaggeredGridView(products);
             } else if (state is ProductRefreshedState) {
               products.clear();
               products = state.loadedProducts;
-              return LiquidPullToRefresh(
-                color: Colors.green[400],
-                springAnimationDurationInMilliseconds: 500,
-                onRefresh: _handleRefresh, // refresh callback
-                child: buildStaggeredGridView(products), // scroll view
-              );
+              return buildStaggeredGridView(products);
             }
           },
           bloc: _productsBloc,

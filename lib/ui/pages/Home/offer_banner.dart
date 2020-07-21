@@ -1,15 +1,30 @@
+import 'package:animations/animations.dart';
+import 'package:f2k/repos/model/Offers.dart';
+import 'package:f2k/ui/pages/OfferDetail.dart';
 import 'package:flutter/material.dart';
 
 class Offers extends StatelessWidget {
-  final String title;
-  final String imageurl;
+  final Offer offer;
 
-  const Offers({Key key, this.title, this.imageurl}) : super(key: key);
+  const Offers({Key key, this.offer}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    return OpenContainer(
+      closedElevation: 0,
+      closedShape:
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      transitionDuration: Duration(milliseconds: 500),
+      closedBuilder: (BuildContext c, VoidCallback action) =>
+          buildCenter(screenWidth),
+      openBuilder: (BuildContext c, VoidCallback action) =>
+          OfferDetail(offer: offer),
+      tappable: true,
+    );
+  }
 
+  Center buildCenter(double screenWidth) {
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(2.0),
@@ -32,14 +47,14 @@ class Offers extends StatelessWidget {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     image: DecorationImage(
-                        image: NetworkImage(imageurl), fit: BoxFit.cover),
+                        image: NetworkImage(offer.imageurl), fit: BoxFit.cover),
                     color: Colors.grey[100]),
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 20, right: 130, left: 20),
               child: Text(
-                title,
+                offer.title,
                 style: TextStyle(
                     fontWeight: FontWeight.w800,
                     letterSpacing: 1.2,

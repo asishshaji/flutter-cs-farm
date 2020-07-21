@@ -5,14 +5,15 @@ import 'package:f2k/services/HiveService.dart';
 import 'package:f2k/ui/pages/BuildTextField.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:toast/toast.dart';
 import 'package:http/http.dart' as http;
+import 'package:toast/toast.dart';
 
 class BottomModal extends StatefulWidget {
   final List<dynamic> orders;
   final double totalPrice;
   final dynamic getdata;
   final String userName;
+
   BottomModal(
       {Key key, this.orders, this.totalPrice, this.getdata, this.userName})
       : super(key: key);
@@ -119,7 +120,7 @@ class _BottomModalState extends State<BottomModal> {
                           ),
                           onPressed: () async {
                             setState(() {
-                              showProgress = true;
+                              showProgress = !showProgress;
                             });
                             List<dynamic> orderJson = new List();
                             for (var elem in widget.orders) {
@@ -134,26 +135,31 @@ class _BottomModalState extends State<BottomModal> {
                             Toast.show(
                                 "Order is being placed, wait...", context,
                                 gravity: Toast.CENTER);
-                            http.Response startServerResponse = await http.get(
+                            await http.get(
                               "https://csf2k.herokuapp.com/",
                             );
                             http.Response response = await http.post(
                                 AppString.orderUrl,
                                 body: finalOrder.toJson(),
                                 headers: {'Content-type': 'application/json'});
-                            debugPrint(response.body.toString());
 
                             if (response.body
                                     .toString()
                                     .compareTo("Order placed") ==
                                 0) {
                               setState(() {
-                                showProgress = false;
+                                showProgress = !showProgress;
                               });
-
                               HiveService.addBoxes(widget.orders, "Orders");
                               await Hive.box("Cart").clear();
                               widget.getdata();
+                              Navigator.of(context).pop();
+                            } else if (response.statusCode == 333) {
+                              Toast.show(
+                                  "${response.body} is not available, try refreshing the app}",
+                                  context,
+                                  gravity: Toast.CENTER,
+                                  duration: Toast.LENGTH_LONG);
                             }
                           },
                           color: Colors.green[400],

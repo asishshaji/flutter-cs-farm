@@ -1,17 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:f2k/repos/model/FinalOrder.dart';
-import 'package:f2k/repos/model/Orders.dart';
-import 'package:f2k/res/AppString.dart';
-import 'package:f2k/services/HiveService.dart';
-import 'package:f2k/ui/pages/BuildTextField.dart';
 import 'package:f2k/ui/pages/ProductOrderBottomModal.dart';
 import 'package:f2k/ui/pages/Sorry.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:http/http.dart' as http;
-import 'package:toast/toast.dart';
 
 import 'Product/ProductDetail.dart';
 
@@ -52,11 +45,9 @@ class _OrderScreenState extends State<OrderScreen> {
     List<dynamic> temp = new List<dynamic>();
     List<double> tempPrices = new List();
 
-    print("Loading from Hive");
     for (int i = 0; i < openBox.length; i++) {
       var box = openBox.getAt(i);
       temp.add(box);
-      debugPrint(box.product.price);
       tempPrices
           .add(double.parse(box.orderCount) * double.parse(box.product.price));
     }

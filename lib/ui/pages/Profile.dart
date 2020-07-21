@@ -96,10 +96,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             SizedBox(
                               height: 5,
                             ),
-                            buildTile("Change address", () {}),
-                            SizedBox(
-                              height: 5,
-                            ),
                             buildTile("View cart", () {
                               Navigator.push(context,
                                   CupertinoPageRoute(builder: (
