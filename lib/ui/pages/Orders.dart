@@ -63,29 +63,28 @@ class _OrderScreenState extends State<OrderScreen> {
     final openBox = await Hive.openBox("Cart");
     openBox.deleteAt(index);
 
-    List<dynamic> temp = new List<dynamic>();
-    List<double> tempPrices = new List();
+    _getOrderFromHive();
+  }
 
-    for (int i = 0; i < openBox.length; i++) {
-      var box = openBox.getAt(i);
+  _increment(int index) async {
+    final openBox = await Hive.openBox("Cart");
+    var item = openBox.getAt(index);
+    item.orderNum = int.parse(item.orderCount) + 1;
+    _getOrderFromHive();
+  }
 
-      temp.add(box);
-      tempPrices
-          .add(double.parse(box.orderCount) * double.parse(box.product.price));
+  _decrement(int index) async {
+    final openBox = await Hive.openBox("Cart");
+    var item = openBox.getAt(index);
+    if (int.parse(item.orderCount) > 1) {
+      item.orderNum = int.parse(item.orderCount) - 1;
+      _getOrderFromHive();
     }
-    double sum = tempPrices.fold(0, (p, c) => p + c);
-
-    setState(() {
-      orders = temp;
-      priceList = tempPrices;
-      totalPrice = sum;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-
     return Scaffold(
       backgroundColor: Colors.white,
       floatingActionButton: orders.length != 0
@@ -131,7 +130,7 @@ class _OrderScreenState extends State<OrderScreen> {
                   imageUrl: order.product.imageurl,
                   imageBuilder: (context, imageProvider) => Container(
                     height: 150,
-                    width: 150,
+                    width: 130,
                     decoration: BoxDecoration(
                         image: DecorationImage(
                             fit: BoxFit.cover, image: imageProvider),
@@ -193,16 +192,29 @@ class _OrderScreenState extends State<OrderScreen> {
                           )
                         ])),
                     Flexible(
-                      child: Align(
-                        alignment: Alignment.bottomLeft,
-                        child: OutlineButton.icon(
-                          focusColor: Colors.green[400],
-                          hoverColor: Colors.green[400],
-                          highlightedBorderColor: Colors.green[400],
-                          onPressed: () => _deleteItem(index),
-                          icon: Icon(Icons.delete_outline),
-                          label: Text("Remove"),
-                        ),
+                      child: Row(
+                        children: <Widget>[
+                          OutlineButton.icon(
+                            focusColor: Colors.green[400],
+                            hoverColor: Colors.green[400],
+                            highlightedBorderColor: Colors.green[400],
+                            onPressed: () => _deleteItem(index),
+                            icon: Icon(Icons.delete_outline),
+                            label: Text("Remove"),
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.add,
+                            ),
+                            onPressed: () => _increment(index),
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.remove,
+                            ),
+                            onPressed: () => _decrement(index),
+                          ),
+                        ],
                       ),
                     )
                   ],
@@ -220,6 +232,13 @@ class _OrderScreenState extends State<OrderScreen> {
       backgroundColor: Colors.transparent,
       elevation: 0,
       centerTitle: true,
+      leading: IconButton(
+        icon: Icon(
+          Icons.arrow_back_ios,
+          color: Colors.grey[700],
+        ),
+        onPressed: () => Navigator.of(context).pop(),
+      ),
       title: Text(
         "Orders",
         style: TextStyle(

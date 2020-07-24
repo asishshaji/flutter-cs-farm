@@ -42,7 +42,7 @@ class Offers extends StatelessWidget {
                     ]).createShader(bounds);
               },
               child: Container(
-                height: 300,
+                height: 200,
                 width: screenWidth * 0.95,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),

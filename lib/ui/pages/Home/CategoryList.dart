@@ -33,6 +33,11 @@ class CategoryList extends StatelessWidget {
             title: "Poultry",
             colors: [Colors.grey[100], Colors.grey[300]],
           ),
+          CategoryCard(
+            image: "assets/images/snacks.png",
+            title: "Snacks",
+            colors: [Colors.grey[100], Colors.black12],
+          ),
         ],
       ),
     );

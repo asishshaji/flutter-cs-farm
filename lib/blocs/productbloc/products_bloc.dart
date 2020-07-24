@@ -30,6 +30,9 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
       List<dynamic> products =
           await _productRepository.fetchFromAPI(event.category);
       yield ProductRefreshedState(loadedProducts: products);
+    } else if (event is GetRandomProductStartEvent) {
+      List<dynamic> products = await _productRepository.getRandomProducts();
+      yield GetRandomProductStateFinished(products);
     }
   }
 }

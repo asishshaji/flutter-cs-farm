@@ -55,7 +55,9 @@ class _ProductListScreenState extends State<ProductListScreen> {
           centerTitle: true,
           leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pop(context, () {
+                setState(() {});
+              });
             },
             icon: Icon(
               Icons.arrow_back_ios,

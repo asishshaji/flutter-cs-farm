@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:curved_drawer/curved_drawer.dart';
 import 'package:f2k/blocs/offersbloc/offers_bloc.dart';
@@ -6,11 +7,14 @@ import 'package:f2k/ui/pages/Home/CategoryList.dart';
 import 'package:f2k/ui/pages/Home/JoinUsCard.dart';
 import 'package:f2k/ui/pages/Home/offer_banner.dart';
 import 'package:f2k/ui/pages/Orders.dart';
+import 'package:f2k/ui/pages/Product/ProductDetail.dart';
 import 'package:f2k/ui/pages/Profile.dart';
 import 'package:f2k/ui/pages/RecipeScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 
 class Home extends StatefulWidget {
   final FirebaseUser user;
@@ -29,12 +33,12 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _productsBloc = BlocProvider.of<ProductsBloc>(context);
     _offersBloc = BlocProvider.of<OffersBloc>(context);
     _offersBloc.add(GetOffers());
     _productsBloc.add(ProductStartEvent(category: "Vegetable"));
+    _productsBloc.add(GetRandomProductStartEvent());
   }
 
   List<DrawerItem> _drawerItems = <DrawerItem>[
@@ -58,18 +62,47 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: Colors.green[400],
-        onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (BuildContext context) => OrderScreen()));
-        },
-        label: Text(
-          "View Cart".toUpperCase(),
-          style: TextStyle(fontFamily: "Merriweather"),
-        ),
-        icon: Icon(Icons.shopping_basket),
-      ),
+      floatingActionButton: FutureBuilder(
+          future: Hive.openBox("Cart"),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text(
+                    "Error Loading",
+                  ),
+                );
+              } else {
+                return FloatingActionButton.extended(
+                  backgroundColor: Colors.green[400],
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (BuildContext context) => OrderScreen()));
+                  },
+                  label: Text(
+                    "View Cart".toUpperCase(),
+                    style: TextStyle(fontFamily: "Merriweather"),
+                  ),
+                  icon: Badge(
+                      badgeColor: Colors.white,
+                      child: Icon(Icons.shopping_basket),
+                      badgeContent: Text(
+                        "${snapshot.data.length}",
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontFamily: "Merriweather",
+                        ),
+                      )),
+                );
+              }
+            } else {
+              return Center(
+                child: CircularProgressIndicator(
+                  backgroundColor: Colors.green[400],
+                ),
+              );
+            }
+          }),
       key: _scaffoldKey,
       drawer: CurvedDrawer(
         color: Colors.white,
@@ -101,16 +134,16 @@ class _HomeState extends State<Home> {
             SizedBox(
               height: 30,
             ),
-            Padding(
-              padding: const EdgeInsets.all(14.0),
-              child: Container(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
+            Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20.0),
+                        child: Text(
                           "Hey ${widget.user.displayName.split(" ")[0]},",
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
@@ -118,28 +151,40 @@ class _HomeState extends State<Home> {
                               fontFamily: "Merriweather",
                               color: Colors.grey[700]),
                         ),
-                        InkWell(
-                            onTap: () {
-                              _scaffoldKey.currentState.openDrawer();
-                            },
+                      ),
+                      InkWell(
+                          onTap: () {
+                            _scaffoldKey.currentState.openDrawer();
+                          },
+                          child: Card(
+                            elevation: 4,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(30),
+                              bottomLeft: Radius.circular(30),
+                            )),
                             child: Padding(
-                              padding: EdgeInsets.only(right: 20),
+                              padding: EdgeInsets.only(
+                                  top: 10, bottom: 10, left: 12, right: 20),
                               child: Icon(
                                 Icons.menu,
                                 size: 34,
                               ),
-                            )),
-                      ],
-                    ),
-                    Text(
+                            ),
+                          )),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20.0),
+                    child: Text(
                       "Find fresh products🍄🍉",
                       style: TextStyle(
                           fontFamily: "Merriweather",
                           fontSize: 24,
                           color: Colors.grey[700]),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
             SizedBox(
@@ -160,7 +205,7 @@ class _HomeState extends State<Home> {
                       options: CarouselOptions(
                         aspectRatio: 16 / 9,
                         viewportFraction: 0.8,
-                        height: 300,
+                        height: 200,
                         autoPlay: true,
                         autoPlayInterval: Duration(seconds: 7),
                         autoPlayAnimationDuration: Duration(milliseconds: 800),
@@ -172,6 +217,12 @@ class _HomeState extends State<Home> {
                           offer: offer,
                         );
                       }).toList(),
+                    );
+                  } else {
+                    return Center(
+                      child: CircularProgressIndicator(
+                        backgroundColor: Colors.green[400],
+                      ),
                     );
                   }
                 },
@@ -203,11 +254,124 @@ class _HomeState extends State<Home> {
                   ),
                   JoinUsCard(),
                   SizedBox(
-                    height: 80,
+                    height: 50,
                   )
                 ],
               ),
-            )
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 14.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    "Best selling",
+                    style: TextStyle(
+                        color: Colors.grey[700],
+                        fontFamily: "Merriweather",
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      Icons.refresh,
+                      size: 32,
+                    ),
+                    color: Colors.grey[700],
+                    onPressed: () {
+                      print("presses");
+                      _productsBloc.add(GetRandomProductStartEvent());
+                    },
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            BlocBuilder(
+                bloc: _productsBloc,
+                builder: (context, state) {
+                  if (state is GetRandomProductStateFinished) {
+                    List<dynamic> products = state.loadedProducts;
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: GridView.builder(
+                        shrinkWrap: true,
+                        physics: new NeverScrollableScrollPhysics(),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                        ),
+                        scrollDirection: Axis.vertical,
+                        itemBuilder: (context, index) {
+                          return InkWell(
+                            onTap: () {
+                              print("Clicked $index");
+                              Navigator.push(context,
+                                  CupertinoPageRoute(builder: (
+                                BuildContext context,
+                              ) {
+                                return ProductDetailScreen(
+                                    product: products[index]);
+                              }));
+                            },
+                            child: Container(
+                              height: 100,
+                              width: 100,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Container(
+                                    height: 100,
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        gradient: LinearGradient(colors: [
+                                          Colors.grey[100],
+                                          Colors.grey[300]
+                                        ], begin: Alignment.topRight)),
+                                    child: Hero(
+                                      tag: "${products[index].sId}",
+                                      child: Image.network(
+                                        products[index].imageurl,
+                                        height: 120,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 4.0),
+                                    child: Text(
+                                      products[index].name,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontFamily: "Merriweather",
+                                          color: Colors.grey[700]),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                        itemCount: products.length,
+                      ),
+                    );
+                  } else {
+                    return Container(
+                      margin: EdgeInsets.only(
+                        bottom: 40,
+                      ),
+                      child: Center(
+                          child: CircularProgressIndicator(
+                        backgroundColor: Colors.green[400],
+                      )),
+                    );
+                  }
+                }),
+            SizedBox(
+              height: 80,
+            ),
           ],
         ),
       ),

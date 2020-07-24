@@ -43,7 +43,19 @@ class _PreviousOrdersScreenState extends State<PreviousOrdersScreen> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text(
+          "Placed Orders",
+          style: TextStyle(
+              fontFamily: "Merriweather",
+              color: Colors.grey[700],
+              fontWeight: FontWeight.bold,
+              fontSize: 24),
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        elevation: 0,
+      ),
       body: Container(
         child: orders.length != 0
             ? ListView.builder(
@@ -57,26 +69,27 @@ class _PreviousOrdersScreenState extends State<PreviousOrdersScreen> {
     );
   }
 
-  Padding buildCard(double width, BuildContext context, order, int index) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 15),
-      child: Container(
-        width: width,
-        height: 150,
-        child: Column(
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                InkWell(
-                  onTap: () {
-                    Navigator.push(context, CupertinoPageRoute(builder: (
-                      BuildContext context,
-                    ) {
-                      return ProductDetailScreen(product: order.product);
-                    }));
-                  },
-                  child: Hero(
-                    tag: order.product.sId,
+  Card buildCard(double width, BuildContext context, order, int index) {
+    return Card(
+      elevation: 0.4,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 15),
+        child: Container(
+          width: width,
+          height: 150,
+          child: Column(
+            children: <Widget>[
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(context, CupertinoPageRoute(builder: (
+                        BuildContext context,
+                      ) {
+                        return ProductDetailScreen(product: order.product);
+                      }));
+                    },
                     child: CachedNetworkImage(
                       imageUrl: order.product.imageurl,
                       imageBuilder: (context, imageProvider) => Container(
@@ -89,12 +102,39 @@ class _PreviousOrdersScreenState extends State<PreviousOrdersScreen> {
                       ),
                     ),
                   ),
-                ),
-                Text(order.product.name),
-                Text(order.orderCount),
-              ],
-            ),
-          ],
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 3),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            order.product.name,
+                            style: TextStyle(
+                                fontFamily: "Merriweather", fontSize: 18),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            "Count: ${order.orderCount}",
+                            style: TextStyle(
+                                fontFamily: "Merriweather", fontSize: 18),
+                          ),
+                          Text(
+                            "Total amount : ₹${double.parse(order.orderCount) * double.parse(order.product.price)}",
+                            style: TextStyle(
+                                fontFamily: "Merriweather", fontSize: 16),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

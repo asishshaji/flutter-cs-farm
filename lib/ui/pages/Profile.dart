@@ -40,8 +40,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 fontWeight: FontWeight.bold,
                 fontSize: 24),
           ),
-          leading:
-              IconButton(icon: Icon(Icons.arrow_back_ios), onPressed: null),
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Colors.grey[700],
+            ),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
         ),
         body: BlocBuilder(
           bloc: _authBloc,

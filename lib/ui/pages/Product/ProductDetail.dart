@@ -149,7 +149,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           image: imageProvider, fit: BoxFit.cover),
                     ),
                   ),
-                  placeholder: (context, url) => CircularProgressIndicator(),
+                  placeholder: (context, url) => Container(
+                      height: height * 0.4,
+                      child: Center(child: CircularProgressIndicator())),
                   errorWidget: (context, url, error) => Icon(Icons.error),
                 )),
             SizedBox(

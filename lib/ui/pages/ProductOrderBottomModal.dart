@@ -122,6 +122,7 @@ class _BottomModalState extends State<BottomModal> {
                             setState(() {
                               showProgress = !showProgress;
                             });
+
                             List<dynamic> orderJson = new List();
                             for (var elem in widget.orders) {
                               Order order = elem as Order;
@@ -138,6 +139,7 @@ class _BottomModalState extends State<BottomModal> {
                             await http.get(
                               "https://csf2k.herokuapp.com/",
                             );
+
                             http.Response response = await http.post(
                                 AppString.orderUrl,
                                 body: finalOrder.toJson(),

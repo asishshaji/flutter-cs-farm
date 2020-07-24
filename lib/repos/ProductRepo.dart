@@ -45,6 +45,20 @@ class ProductRepository extends Equatable {
     return products;
   }
 
+  Future<List<dynamic>> getRandomProducts() async {
+    List<dynamic> products = List<dynamic>();
+
+    var response = await http.get(AppString.random);
+    if (response.statusCode == 200) {
+      var jsonReponse = json.decode(response.body);
+      (jsonReponse as List).map((e) {
+        Product product = Product.fromJson(e);
+        products.add(product);
+      }).toList();
+    }
+    return products;
+  }
+
   @override
   // TODO: implement props
   List<Object> get props => throw UnimplementedError();

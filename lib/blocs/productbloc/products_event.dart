@@ -20,6 +20,12 @@ class ProductStartEvent extends ProductsEvent {
   List<Object> get props => [category];
 }
 
+class GetRandomProductStartEvent extends ProductsEvent {
+  @override
+  // TODO: implement props
+  List<Object> get props => throw UnimplementedError();
+}
+
 class ProductRefreshEvent extends ProductsEvent {
   final String category;
 

@@ -3,4 +3,5 @@ class AppString {
   static String productCatUrl =
       "http://csf2k.herokuapp.com/api/v1/product/cat/";
   static String orderUrl = "http://csf2k.herokuapp.com/makeorder";
+  static String random = "http://csf2k.herokuapp.com/api/v1/product/random";
 }

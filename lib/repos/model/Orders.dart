@@ -9,7 +9,7 @@ part 'Orders.g.dart';
 @HiveType()
 class Order {
   @HiveField(0)
-  final String orderCount;
+  String orderCount;
   @HiveField(1)
   final Product product;
 
@@ -23,6 +23,10 @@ class Order {
       'orderCount': orderCount,
       'product': product?.toMap(),
     };
+  }
+
+  void set orderNum(int newCount) {
+    orderCount = newCount.toString();
   }
 
   static Order fromMap(Map<String, dynamic> map) {
