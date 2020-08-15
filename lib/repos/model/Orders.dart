@@ -25,7 +25,7 @@ class Order {
     };
   }
 
-  void set orderNum(int newCount) {
+  set orderNum(int newCount) {
     orderCount = newCount.toString();
   }
 

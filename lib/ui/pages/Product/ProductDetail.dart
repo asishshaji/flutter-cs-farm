@@ -65,7 +65,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             controller: _quantityController,
                             icon: Icons.view_module,
                             hintText: "Quantity",
-                            textInputType: TextInputType.number),
+                            textInputType: TextInputType.phone),
                         SizedBox(
                           height: 40,
                         ),
@@ -162,9 +162,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               child: Text(
                 widget.product.name,
                 style: TextStyle(
-                    fontFamily: "Merriweather",
-                    fontSize: 26,
-                    fontWeight: FontWeight.w800),
+                  fontFamily: "Merriweather",
+                  fontSize: 26,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
             SizedBox(
@@ -176,16 +177,33 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   buildCount(),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 10),
-                    child: Text(
-                      "₹ ${widget.product.price}",
-                      style: TextStyle(
-                          fontFamily: "Merriweather",
-                          fontSize: 26,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.green[400]),
-                    ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: Text(
+                          "₹ ${widget.product.crossprice ?? "0"}",
+                          style: TextStyle(
+                              fontFamily: "Merriweather",
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              decoration: TextDecoration.lineThrough,
+                              color: Colors.green.shade300),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: Text(
+                          "₹ ${widget.product.price}",
+                          style: TextStyle(
+                              fontFamily: "Merriweather",
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.green[400]),
+                        ),
+                      )
+                    ],
                   )
                 ],
               ),
@@ -222,7 +240,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: Text(
-                widget.product.benifits,
+                widget.product.benifits ?? "",
                 style: TextStyle(
                     fontSize: 16,
                     color: Colors.grey[700],

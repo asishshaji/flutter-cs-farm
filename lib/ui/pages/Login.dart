@@ -33,8 +33,12 @@ class _LoginState extends State<Login> {
           SizedBox(
             height: 80,
           ),
-          FlutterLogo(
-            size: 200.0,
+          Center(
+            child: Image(
+              image: AssetImage("assets/logo.png"),
+              width: 150,
+              height: 150,
+            ),
           ),
           SizedBox(
             height: 80,
@@ -61,6 +65,7 @@ class _LoginState extends State<Login> {
             child: BlocBuilder(
           bloc: _authBloc,
           builder: (BuildContext context, AuthState state) {
+            debugPrint(state.toString());
             if (state is Unauthenticated) {
               return buildGoogleLogIn(context);
             } else if (state is Authenticated) {

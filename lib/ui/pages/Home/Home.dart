@@ -3,8 +3,12 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:curved_drawer/curved_drawer.dart';
 import 'package:f2k/blocs/offersbloc/offers_bloc.dart';
 import 'package:f2k/blocs/productbloc/products_bloc.dart';
+import 'package:f2k/repos/PackRepo.dart';
+import 'package:f2k/repos/ProductRepo.dart';
 import 'package:f2k/ui/pages/Home/CategoryList.dart';
+import 'package:f2k/ui/pages/Home/CustomMessage.dart';
 import 'package:f2k/ui/pages/Home/JoinUsCard.dart';
+import 'package:f2k/ui/pages/Home/PackCard.dart';
 import 'package:f2k/ui/pages/Home/offer_banner.dart';
 import 'package:f2k/ui/pages/Orders.dart';
 import 'package:f2k/ui/pages/Product/ProductDetail.dart';
@@ -37,7 +41,6 @@ class _HomeState extends State<Home> {
     _productsBloc = BlocProvider.of<ProductsBloc>(context);
     _offersBloc = BlocProvider.of<OffersBloc>(context);
     _offersBloc.add(GetOffers());
-    _productsBloc.add(ProductStartEvent(category: "Vegetable"));
     _productsBloc.add(GetRandomProductStartEvent());
   }
 
@@ -62,47 +65,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FutureBuilder(
-          future: Hive.openBox("Cart"),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              if (snapshot.hasError) {
-                return Center(
-                  child: Text(
-                    "Error Loading",
-                  ),
-                );
-              } else {
-                return FloatingActionButton.extended(
-                  backgroundColor: Colors.green[400],
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) => OrderScreen()));
-                  },
-                  label: Text(
-                    "View Cart".toUpperCase(),
-                    style: TextStyle(fontFamily: "Merriweather"),
-                  ),
-                  icon: Badge(
-                      badgeColor: Colors.white,
-                      child: Icon(Icons.shopping_basket),
-                      badgeContent: Text(
-                        "${snapshot.data.length}",
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontFamily: "Merriweather",
-                        ),
-                      )),
-                );
-              }
-            } else {
-              return Center(
-                child: CircularProgressIndicator(
-                  backgroundColor: Colors.green[400],
-                ),
-              );
-            }
-          }),
+      floatingActionButton: buildFAB(),
       key: _scaffoldKey,
       drawer: CurvedDrawer(
         color: Colors.white,
@@ -134,59 +97,7 @@ class _HomeState extends State<Home> {
             SizedBox(
               height: 30,
             ),
-            Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20.0),
-                        child: Text(
-                          "Hey ${widget.user.displayName.split(" ")[0]},",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 32,
-                              fontFamily: "Merriweather",
-                              color: Colors.grey[700]),
-                        ),
-                      ),
-                      InkWell(
-                          onTap: () {
-                            _scaffoldKey.currentState.openDrawer();
-                          },
-                          child: Card(
-                            elevation: 4,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(30),
-                              bottomLeft: Radius.circular(30),
-                            )),
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                  top: 10, bottom: 10, left: 12, right: 20),
-                              child: Icon(
-                                Icons.menu,
-                                size: 34,
-                              ),
-                            ),
-                          )),
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20.0),
-                    child: Text(
-                      "Find fresh products🍄🍉",
-                      style: TextStyle(
-                          fontFamily: "Merriweather",
-                          fontSize: 24,
-                          color: Colors.grey[700]),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            buildHeader(),
             SizedBox(
               height: 30,
             ),
@@ -228,6 +139,41 @@ class _HomeState extends State<Home> {
                 },
                 bloc: _offersBloc),
             SizedBox(
+              height: 30,
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: 10,
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Flexible(
+                    child: Text(
+                      "Send message to receive \nneccessary items during lockdown",
+                      style: TextStyle(
+                        fontFamily: "Merriweather",
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                  RaisedButton(
+                    color: Colors.green[400],
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (BuildContext context) => CustomMessage()));
+                    },
+                    child: Text("Place order",
+                        style: TextStyle(
+                            fontFamily: "Merriweather",
+                            color: Colors.white,
+                            fontSize: 18)),
+                  )
+                ],
+              ),
+            ),
+            SizedBox(
               height: 15,
             ),
             Container(
@@ -261,59 +207,47 @@ class _HomeState extends State<Home> {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 14.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "Best selling",
-                    style: TextStyle(
-                        color: Colors.grey[700],
-                        fontFamily: "Merriweather",
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.refresh,
-                      size: 32,
-                    ),
+              child: Text(
+                "Best selling",
+                style: TextStyle(
                     color: Colors.grey[700],
-                    onPressed: () {
-                      print("presses");
-                      _productsBloc.add(GetRandomProductStartEvent());
-                    },
-                  ),
-                ],
+                    fontFamily: "Merriweather",
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold),
               ),
             ),
             SizedBox(
               height: 20,
             ),
-            BlocBuilder(
-                bloc: _productsBloc,
-                builder: (context, state) {
-                  if (state is GetRandomProductStateFinished) {
-                    List<dynamic> products = state.loadedProducts;
+            FutureBuilder(
+              future: ProductRepository().getRandomProducts(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: CircularProgressIndicator(
+                        backgroundColor: Colors.green[400],
+                      ),
+                    );
+                  } else {
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: GridView.builder(
                         shrinkWrap: true,
                         physics: new NeverScrollableScrollPhysics(),
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
+                          crossAxisCount: 2,
                         ),
                         scrollDirection: Axis.vertical,
                         itemBuilder: (context, index) {
                           return InkWell(
                             onTap: () {
-                              print("Clicked $index");
                               Navigator.push(context,
                                   CupertinoPageRoute(builder: (
                                 BuildContext context,
                               ) {
                                 return ProductDetailScreen(
-                                    product: products[index]);
+                                    product: snapshot.data[index]);
                               }));
                             },
                             child: Container(
@@ -332,17 +266,18 @@ class _HomeState extends State<Home> {
                                           Colors.grey[300]
                                         ], begin: Alignment.topRight)),
                                     child: Hero(
-                                      tag: "${products[index].sId}",
+                                      tag: "${snapshot.data[index].sId}",
                                       child: Image.network(
-                                        products[index].imageurl,
+                                        snapshot.data[index].imageurl,
                                         height: 120,
+                                        fit: BoxFit.cover,
                                       ),
                                     ),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(top: 4.0),
                                     child: Text(
-                                      products[index].name,
+                                      snapshot.data[index].name,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                           fontFamily: "Merriweather",
@@ -354,26 +289,179 @@ class _HomeState extends State<Home> {
                             ),
                           );
                         },
-                        itemCount: products.length,
+                        itemCount: snapshot.data.length,
                       ),
-                    );
-                  } else {
-                    return Container(
-                      margin: EdgeInsets.only(
-                        bottom: 40,
-                      ),
-                      child: Center(
-                          child: CircularProgressIndicator(
-                        backgroundColor: Colors.green[400],
-                      )),
                     );
                   }
-                }),
+                } else {
+                  return Center(
+                    child: CircularProgressIndicator(
+                      backgroundColor: Colors.green[400],
+                    ),
+                  );
+                }
+              },
+            ),
+            SizedBox(
+              height: 30,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 14.0),
+              child: Text(
+                "Custom Packs",
+                style: TextStyle(
+                    color: Colors.grey[700],
+                    fontFamily: "Merriweather",
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            FutureBuilder(
+              future: PackRepo().getPacks(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  if (snapshot.hasData) {
+                    return CarouselSlider(
+                      options: CarouselOptions(
+                        aspectRatio: 16 / 9,
+                        viewportFraction: 0.8,
+                        height: 200,
+                        // autoPlay: true,
+                        // autoPlayInterval: Duration(seconds: 7),
+                        // autoPlayAnimationDuration: Duration(milliseconds: 800),
+                        // autoPlayCurve: Curves.fastOutSlowIn,
+                        enlargeCenterPage: true,
+                      ),
+                      items: snapshot.data.map<Widget>((pack) {
+                        return PackCard(
+                          pack: pack,
+                        );
+                      }).toList(),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: CircularProgressIndicator(
+                        backgroundColor: Colors.green[400],
+                      ),
+                    );
+                  }
+                } else {
+                  return Center(
+                    child: CircularProgressIndicator(
+                      backgroundColor: Colors.green[400],
+                    ),
+                  );
+                }
+              },
+            ),
             SizedBox(
               height: 80,
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  FutureBuilder<Box> buildFAB() {
+    return FutureBuilder(
+        future: Hive.openBox("Cart"),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasError) {
+              return Center(
+                child: CircularProgressIndicator(
+                  backgroundColor: Colors.green[400],
+                ),
+              );
+            } else {
+              return FloatingActionButton.extended(
+                backgroundColor: Colors.green[400],
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (BuildContext context) => OrderScreen()));
+                },
+                label: Text(
+                  "View Cart".toUpperCase(),
+                  style: TextStyle(fontFamily: "Merriweather"),
+                ),
+                icon: Badge(
+                    badgeColor: Colors.white,
+                    child: Icon(Icons.shopping_basket),
+                    badgeContent: Text(
+                      "${snapshot.data.length}",
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontFamily: "Merriweather",
+                      ),
+                    )),
+              );
+            }
+          } else {
+            return Center(
+              child: CircularProgressIndicator(
+                backgroundColor: Colors.green[400],
+              ),
+            );
+          }
+        });
+  }
+
+  Container buildHeader() {
+    return Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(left: 20.0),
+                child: Text(
+                  "Hey ${widget.user.displayName.split(" ")[0]},",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 32,
+                      fontFamily: "Merriweather",
+                      color: Colors.grey[700]),
+                ),
+              ),
+              InkWell(
+                  onTap: () {
+                    _scaffoldKey.currentState.openDrawer();
+                  },
+                  child: Card(
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      bottomLeft: Radius.circular(30),
+                    )),
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          top: 10, bottom: 10, left: 12, right: 20),
+                      child: Icon(
+                        Icons.menu,
+                        size: 34,
+                      ),
+                    ),
+                  )),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20.0),
+            child: Text(
+              "Find fresh products🍄🍉",
+              style: TextStyle(
+                  fontFamily: "Merriweather",
+                  fontSize: 24,
+                  color: Colors.grey[700]),
+            ),
+          ),
+        ],
       ),
     );
   }

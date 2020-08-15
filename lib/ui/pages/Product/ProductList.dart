@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:f2k/blocs/productbloc/products_bloc.dart';
 import 'package:f2k/repos/model/Product.dart';
+import 'package:f2k/ui/pages/Orders.dart';
 import 'package:f2k/ui/pages/Product/ProductDetail.dart';
 import 'package:f2k/ui/pages/Sorry.dart';
 import 'package:flutter/cupertino.dart';
@@ -53,6 +54,25 @@ class _ProductListScreenState extends State<ProductListScreen> {
           elevation: 0,
           backgroundColor: Colors.transparent,
           centerTitle: true,
+          actions: <Widget>[
+            IconButton(
+              onPressed: () {
+                Navigator.push(context, CupertinoPageRoute(builder: (
+                  BuildContext context,
+                ) {
+                  return OrderScreen();
+                }));
+              },
+              icon: Icon(
+                Icons.shopping_basket,
+                color: Colors.grey[700],
+                size: 26,
+              ),
+            ),
+            SizedBox(
+              width: 20,
+            ),
+          ],
           leading: IconButton(
             onPressed: () {
               Navigator.pop(context, () {
@@ -90,6 +110,12 @@ class _ProductListScreenState extends State<ProductListScreen> {
               products.clear();
               products = state.loadedProducts;
               return buildStaggeredGridView(products);
+            } else {
+              return Center(
+                child: CircularProgressIndicator(
+                  backgroundColor: Colors.green[400],
+                ),
+              );
             }
           },
           bloc: _productsBloc,
@@ -134,9 +160,9 @@ class _ProductListScreenState extends State<ProductListScreen> {
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [
-                      Colors.grey[600],
-                      Colors.grey[700],
-                      Colors.grey[600],
+                      Colors.grey.shade800,
+                      Colors.grey.shade600,
+                      Colors.grey.shade800,
                     ]).createShader(bounds);
               },
               child: Card(
@@ -148,7 +174,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                 elevation: 4,
                 child: CachedNetworkImage(
                     imageUrl: product.imageurl,
-                    fit: BoxFit.contain,
+                    fit: BoxFit.cover,
                     width: double.infinity,
                     progressIndicatorBuilder:
                         (context, url, downloadProgress) => Center(
@@ -180,10 +206,11 @@ class _ProductListScreenState extends State<ProductListScreen> {
                 child: Text(
                   "₹ ${product.price}",
                   style: TextStyle(
-                      fontFamily: "Merriweather",
-                      color: Colors.white,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600),
+                    fontFamily: "Merriweather",
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
             ),

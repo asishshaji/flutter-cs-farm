@@ -3,6 +3,7 @@ import 'package:f2k/repos/model/Orders.dart';
 import 'package:f2k/res/AppString.dart';
 import 'package:f2k/services/HiveService.dart';
 import 'package:f2k/ui/pages/BuildTextField.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
@@ -26,6 +27,7 @@ class _BottomModalState extends State<BottomModal> {
   TextEditingController _nameController;
   TextEditingController _phoneController = new TextEditingController();
   TextEditingController _addressController = new TextEditingController();
+  TextEditingController _couponController = new TextEditingController();
 
   bool showProgress = false;
 
@@ -48,7 +50,7 @@ class _BottomModalState extends State<BottomModal> {
                     topRight: Radius.circular(40))),
             builder: (context) {
               return Container(
-                height: height * 0.8,
+                height: height * 0.93,
                 child: Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 15, horizontal: 8),
@@ -123,43 +125,57 @@ class _BottomModalState extends State<BottomModal> {
                               showProgress = !showProgress;
                             });
 
-                            List<dynamic> orderJson = new List();
-                            for (var elem in widget.orders) {
-                              Order order = elem as Order;
-                              orderJson.add(order);
-                            }
-                            FinalOrder finalOrder = FinalOrder(
-                                address: _addressController.text,
-                                buyerName: _nameController.text,
-                                phoneNumber: _phoneController.text,
-                                userOrders: orderJson);
-                            Toast.show(
-                                "Order is being placed, wait...", context,
-                                gravity: Toast.CENTER);
-                            await http.get(
-                              "https://csf2k.herokuapp.com/",
-                            );
+                            if (_phoneController.text.isNotEmpty) {
+                              if (widget.totalPrice > 100) {
+                                List<dynamic> orderJson = new List();
+                                for (var elem in widget.orders) {
+                                  Order order = elem as Order;
+                                  orderJson.add(order);
+                                }
+                                FinalOrder finalOrder = FinalOrder(
+                                    address: _addressController.text,
+                                    buyerName: _nameController.text,
+                                    phoneNumber: _phoneController.text,
+                                    userOrders: orderJson);
+                                Toast.show(
+                                    "Order is being placed, wait...", context,
+                                    gravity: Toast.CENTER);
+                                await http.get(
+                                  "https://csf2k.herokuapp.com/",
+                                );
 
-                            http.Response response = await http.post(
-                                AppString.orderUrl,
-                                body: finalOrder.toJson(),
-                                headers: {'Content-type': 'application/json'});
+                                http.Response response = await http.post(
+                                    AppString.orderUrl,
+                                    body: finalOrder.toJson(),
+                                    headers: {
+                                      'Content-type': 'application/json'
+                                    });
 
-                            if (response.body
-                                    .toString()
-                                    .compareTo("Order placed") ==
-                                0) {
-                              setState(() {
-                                showProgress = !showProgress;
-                              });
-                              HiveService.addBoxes(widget.orders, "Orders");
-                              await Hive.box("Cart").clear();
-                              widget.getdata();
-                              Navigator.of(context).pop();
-                            } else if (response.statusCode == 333) {
-                              Toast.show(
-                                  "${response.body} is not available, try refreshing the app}",
-                                  context,
+                                if (response.body
+                                        .toString()
+                                        .compareTo("Order placed") ==
+                                    0) {
+                                  setState(() {
+                                    showProgress = !showProgress;
+                                  });
+                                  HiveService.addBoxes(widget.orders, "Orders");
+                                  await Hive.box("Cart").clear();
+                                  widget.getdata();
+                                  Navigator.of(context).pop();
+                                } else if (response.statusCode == 333) {
+                                  Toast.show(
+                                      "${response.body} is out of stock, remove item from cart",
+                                      context,
+                                      gravity: Toast.CENTER,
+                                      duration: Toast.LENGTH_LONG);
+                                }
+                              } else {
+                                Toast.show("Minimum amount is 100", context,
+                                    gravity: Toast.CENTER,
+                                    duration: Toast.LENGTH_LONG);
+                              }
+                            } else {
+                              Toast.show("Enter a valid phone number", context,
                                   gravity: Toast.CENTER,
                                   duration: Toast.LENGTH_LONG);
                             }

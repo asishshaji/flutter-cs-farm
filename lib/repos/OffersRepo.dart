@@ -13,9 +13,9 @@ class OffersRepo extends Equatable {
 
     var response = await http.get(AppString.offerUrl);
     if (response.statusCode == 200) {
-      var jsonReponse = json.decode(response.body);
+      var jsonResponse = json.decode(response.body);
 
-      (jsonReponse as List).map((off) {
+      (jsonResponse as List).map((off) {
         Offer offer = Offer.fromJson(off);
         offers.add(offer);
       }).toList();

@@ -17,9 +17,7 @@ class OrderScreen extends StatefulWidget {
 
 class _OrderScreenState extends State<OrderScreen> {
   List<dynamic> orders = new List<dynamic>();
-  TextEditingController _nameController;
-  TextEditingController _phoneController = new TextEditingController();
-  TextEditingController _addressController = new TextEditingController();
+
   List<double> priceList = new List();
   String userName;
   double totalPrice = 0.0;
@@ -27,7 +25,6 @@ class _OrderScreenState extends State<OrderScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -69,8 +66,10 @@ class _OrderScreenState extends State<OrderScreen> {
   _increment(int index) async {
     final openBox = await Hive.openBox("Cart");
     var item = openBox.getAt(index);
-    item.orderNum = int.parse(item.orderCount) + 1;
-    _getOrderFromHive();
+    if (item.product.count > int.parse(item.orderCount)) {
+      item.orderNum = int.parse(item.orderCount) + 1;
+      _getOrderFromHive();
+    }
   }
 
   _decrement(int index) async {
@@ -194,25 +193,25 @@ class _OrderScreenState extends State<OrderScreen> {
                     Flexible(
                       child: Row(
                         children: <Widget>[
-                          OutlineButton.icon(
-                            focusColor: Colors.green[400],
-                            hoverColor: Colors.green[400],
-                            highlightedBorderColor: Colors.green[400],
-                            onPressed: () => _deleteItem(index),
+                          IconButton(
                             icon: Icon(Icons.delete_outline),
-                            label: Text("Remove"),
+                            onPressed: () => _deleteItem(index),
                           ),
-                          IconButton(
-                            icon: Icon(
-                              Icons.add,
+                          Flexible(
+                            child: IconButton(
+                              icon: Icon(
+                                Icons.add,
+                              ),
+                              onPressed: () => _increment(index),
                             ),
-                            onPressed: () => _increment(index),
                           ),
-                          IconButton(
-                            icon: Icon(
-                              Icons.remove,
+                          Flexible(
+                            child: IconButton(
+                              icon: Icon(
+                                Icons.remove,
+                              ),
+                              onPressed: () => _decrement(index),
                             ),
-                            onPressed: () => _decrement(index),
                           ),
                         ],
                       ),

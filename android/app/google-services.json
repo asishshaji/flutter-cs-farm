@@ -15,76 +15,18 @@
       },
       "oauth_client": [
         {
+          "client_id": "900543196699-6vlj9oe5r6bfiflmo3mcto4bqg3k1t1k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.asishshaji.f2k",
+            "certificate_hash": "245a6dec75db3880457d94675b141c64126c3196"
+          }
+        },
+        {
           "client_id": "900543196699-rbaf849c2llnv5fpshu9rohnr96gq5bh.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.asishshaji.f2k",
-            "certificate_hash": "dcb44a794dbaee76e8fe8f371e08aa535d777138"
-          }
-        },
-        {
-          "client_id": "900543196699-rh8k0078hhfkgqg6lslge10khl7l0om5.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyA38VD85oVWYwoO8M5ADJhJWAzTy_GbLQU"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "900543196699-rh8k0078hhfkgqg6lslge10khl7l0om5.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:900543196699:android:b6689675674fcfab7752be",
-        "android_client_info": {
-          "package_name": "com.asishshaji.foodmart"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "900543196699-rh8k0078hhfkgqg6lslge10khl7l0om5.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyA38VD85oVWYwoO8M5ADJhJWAzTy_GbLQU"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "900543196699-rh8k0078hhfkgqg6lslge10khl7l0om5.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:900543196699:android:efc78289bc07ded27752be",
-        "android_client_info": {
-          "package_name": "comcom.asishshaji.f2k"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "900543196699-n8614pebfvurkspiadbjfpgrp273jhib.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "comcom.asishshaji.f2k",
             "certificate_hash": "dcb44a794dbaee76e8fe8f371e08aa535d777138"
           }
         },

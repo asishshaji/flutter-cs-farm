@@ -124,6 +124,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               height: 5,
                             ),
                             buildTile("about us", () {}),
+                            SizedBox(
+                              height: 5,
+                            ),
                           ],
                         ),
                       )

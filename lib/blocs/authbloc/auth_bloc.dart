@@ -6,6 +6,7 @@ import 'package:f2k/repos/UserRepo.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
+import 'package:http/http.dart' as http;
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -28,10 +29,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     } else if (event is SignInEvent) {
       FirebaseUser currentUser = await _userRepository.currentUser();
+      print(currentUser);
       if (currentUser != null) {
         yield AuthenticationFailure(errorMessage: "Already Signed in");
       } else {
         FirebaseUser _user = await _userRepository.signInUsingGoogle();
+
         yield Authenticated(user: _user);
       }
     } else if (event is SignOutEvent) {

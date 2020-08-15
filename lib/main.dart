@@ -26,7 +26,6 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   UserRepository userRepository = UserRepository();
   ProductRepository productRepository = ProductRepository();
   OffersRepo offersRepo = OffersRepo();

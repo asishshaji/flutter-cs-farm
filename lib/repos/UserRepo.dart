@@ -23,6 +23,7 @@ class UserRepository extends Equatable {
 
     final AuthResult authResult =
         await _firebaseAuth.signInWithCredential(credential);
+    print(authResult.user);
     return authResult.user;
   }
 
