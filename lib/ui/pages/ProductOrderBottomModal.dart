@@ -5,6 +5,7 @@ import 'package:f2k/services/HiveService.dart';
 import 'package:f2k/ui/pages/BuildTextField.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:toast/toast.dart';
@@ -24,17 +25,41 @@ class BottomModal extends StatefulWidget {
 }
 
 class _BottomModalState extends State<BottomModal> {
-  TextEditingController _nameController;
-  TextEditingController _phoneController = new TextEditingController();
-  TextEditingController _addressController = new TextEditingController();
-  TextEditingController _couponController = new TextEditingController();
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController();
+  TextEditingController _addressController = TextEditingController();
+  TextEditingController _messageController = TextEditingController();
 
   bool showProgress = false;
+  String name;
+  String phone;
+  String address;
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      getDetails();
+    });
+  }
+
+  getDetails() async {
+    final openBox = await Hive.openBox("Contact");
+    if (openBox.isNotEmpty) {
+      setState(() {
+        name = openBox.get("name");
+        phone = openBox.get("phone");
+        address = openBox.get("address");
+      });
+      _nameController.text = name;
+      _phoneController.text = phone;
+      _addressController.text = address;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    _nameController = new TextEditingController(text: widget.userName);
-
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
 
@@ -84,23 +109,27 @@ class _BottomModalState extends State<BottomModal> {
                           icon: Icons.home,
                           hintText: "Address",
                           textInputType: TextInputType.multiline),
+                      BuildTextField(
+                          width: width,
+                          controller: _messageController,
+                          icon: Icons.message,
+                          hintText: "Message",
+                          textInputType: TextInputType.multiline),
                       SizedBox(
                         height: 20,
                       ),
                       RichText(
                           text: TextSpan(
                               text: 'Net Price',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                  fontFamily: "Merriweather"),
+                              style: GoogleFonts.dmSans(
+                                color: Colors.black,
+                                fontSize: 18,
+                              ),
                               children: <TextSpan>[
                             TextSpan(
                               text: "   ₹ ${widget.totalPrice}",
-                              style: TextStyle(
-                                  fontFamily: "Merriweather",
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600),
+                              style: GoogleFonts.dmSans(
+                                  fontSize: 18, fontWeight: FontWeight.w600),
                             )
                           ])),
                       SizedBox(
@@ -108,7 +137,7 @@ class _BottomModalState extends State<BottomModal> {
                       ),
                       Text(
                         "You can pay on delivery via cash or UPI.",
-                        style: TextStyle(fontFamily: "Merriweather"),
+                        style: GoogleFonts.dmSans(),
                       ),
                       SizedBox(
                         height: 30,
@@ -136,6 +165,7 @@ class _BottomModalState extends State<BottomModal> {
                                     address: _addressController.text,
                                     buyerName: _nameController.text,
                                     phoneNumber: _phoneController.text,
+                                    message: _messageController.text,
                                     userOrders: orderJson);
                                 Toast.show(
                                     "Order is being placed, wait...", context,
@@ -150,6 +180,7 @@ class _BottomModalState extends State<BottomModal> {
                                     headers: {
                                       'Content-type': 'application/json'
                                     });
+                                print(response.body);
 
                                 if (response.body
                                         .toString()
@@ -180,22 +211,17 @@ class _BottomModalState extends State<BottomModal> {
                                   duration: Toast.LENGTH_LONG);
                             }
                           },
-                          color: Colors.green[400],
+                          color: Colors.green[600],
                           textColor: Colors.white,
                           child: Text("Buy now".toUpperCase(),
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: "Merriweather",
+                              style: GoogleFonts.dmSans(
+                                fontSize: 12,
                               )),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
-                      if (showProgress)
-                        CircularProgressIndicator(
-                          backgroundColor: Colors.green[400],
-                        )
                     ],
                   ),
                 ),
@@ -207,7 +233,7 @@ class _BottomModalState extends State<BottomModal> {
         style: TextStyle(fontFamily: "Merriweather", color: Colors.white),
       ),
       icon: Icon(Icons.shopping_basket),
-      backgroundColor: Colors.green[400],
+      backgroundColor: Colors.green[600],
     );
   }
 }

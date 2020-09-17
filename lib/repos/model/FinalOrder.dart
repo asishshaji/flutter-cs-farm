@@ -5,12 +5,14 @@ class FinalOrder {
   String phoneNumber;
   String address;
   List<dynamic> userOrders;
+  String message;
 
   FinalOrder({
     this.buyerName,
     this.phoneNumber,
     this.address,
     this.userOrders,
+    this.message,
   });
 
   Map<String, dynamic> toMap() {
@@ -19,6 +21,7 @@ class FinalOrder {
       'phoneNumber': phoneNumber,
       'address': address,
       'userOrders': userOrders,
+      'message': message,
     };
   }
 

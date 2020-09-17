@@ -29,6 +29,21 @@ class ProductRepository extends Equatable {
     return products;
   }
 
+  Future<List<dynamic>> searchProduct(String search) async {
+    List<dynamic> products = List<dynamic>();
+
+    var response = await http.get(AppString.search);
+    if (response.statusCode == 200) {
+      var jsonReponse = json.decode(response.body);
+      (jsonReponse as List).map((e) {
+        Product product = Product.fromJson(e);
+        products.add(product);
+      }).toList();
+    }
+
+    return products;
+  }
+
   Future<List<dynamic>> fetchFromAPI(String category) async {
     List<dynamic> products = List<dynamic>();
 
@@ -58,8 +73,4 @@ class ProductRepository extends Equatable {
     }
     return products;
   }
-
-  @override
-  // TODO: implement props
-  List<Object> get props => throw UnimplementedError();
 }

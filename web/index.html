@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta content="IE=Edge" http-equiv="X-UA-Compatible" />
+    <meta name="description" content="A new Flutter project." />
+
+    <!-- iOS meta tags & icons -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-title" content="f2k" />
+    <link rel="apple-touch-icon" href="icons/Icon-192.png" />
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> 
+
+    <meta name="google-signin-client_id" content="1008782483512-p23ttnt576ndaec5nvl0qmmnn3r9tkjg.apps.googleusercontent.com">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/png" href="favicon.png" />
+
+    <title>f2k</title>
+    <link rel="manifest" href="manifest.json" />
+  </head>
+  <body>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.18.0/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.18.0/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.8.0/firebase-auth.js"></script>
+    
+    
+
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: 'AIzaSyAHxVy7s2ZUh4AEDZx3uhKrPu_J1s46HzA',
+        authDomain: 'greenary-13ea5.firebaseapp.com',
+        databaseURL: 'https://greenary-13ea5.firebaseio.com',
+        projectId: 'greenary-13ea5',
+        storageBucket: 'greenary-13ea5.appspot.com',
+        messagingSenderId: '1008782483512',
+        appId: '1:1008782483512:web:b84226a1695e810f1046cd',
+        measurementId: 'G-FY4WQ09MXS',
+      }
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig)
+      firebase.analytics()
+    </script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker.register('flutter_service_worker.js')
+        })
+      }
+    </script>
+    <script src="main.dart.js" type="application/javascript"></script>
+  </body>
+</html>

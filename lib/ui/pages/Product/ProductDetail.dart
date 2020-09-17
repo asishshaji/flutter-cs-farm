@@ -3,6 +3,7 @@ import 'package:f2k/repos/model/Orders.dart';
 import 'package:f2k/repos/model/Product.dart';
 import 'package:f2k/ui/pages/BuildTextField.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:toast/toast.dart';
 
@@ -57,7 +58,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               color: Colors.grey[700],
                               borderRadius: BorderRadius.circular(10)),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 30,
                         ),
                         BuildTextField(
@@ -108,12 +109,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                     gravity: Toast.BOTTOM);
                               }
                             },
-                            color: Colors.green[400],
+                            color: Colors.green[600],
                             textColor: Colors.white,
                             child: Text("Add to cart".toUpperCase(),
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontFamily: "Merriweather",
+                                style: GoogleFonts.dmSans(
+                                  fontSize: 12,
                                 )),
                           ),
                         )
@@ -125,10 +125,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         },
         label: Text(
           'Add to cart'.toUpperCase(),
-          style: TextStyle(fontFamily: "Merriweather", color: Colors.white),
+          style: GoogleFonts.dmSans(
+            color: Colors.white,
+          ),
         ),
         icon: Icon(Icons.add_shopping_cart),
-        backgroundColor: Colors.green[400],
+        backgroundColor: Colors.green[600],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -137,7 +139,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             Hero(
                 tag: "${widget.product.sId}",
                 child: CachedNetworkImage(
-                  imageUrl: widget.product.imageurl,
+                  imageUrl: widget.product.imageurl ??
+                      "https://images.unsplash.com/photo-1530797584131-115643783014?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1351&q=80",
                   imageBuilder: (context, imageProvider) => Container(
                     height: height * 0.4,
                     decoration: BoxDecoration(
@@ -161,10 +164,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 12.0),
               child: Text(
                 widget.product.name,
-                style: TextStyle(
-                  fontFamily: "Merriweather",
-                  fontSize: 26,
-                  fontWeight: FontWeight.w600,
+                style: GoogleFonts.dmSans(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ),
@@ -184,9 +186,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         padding: const EdgeInsets.only(right: 10),
                         child: Text(
                           "₹ ${widget.product.crossprice ?? "0"}",
-                          style: TextStyle(
-                              fontFamily: "Merriweather",
-                              fontSize: 20,
+                          style: GoogleFonts.dmSans(
                               fontWeight: FontWeight.bold,
                               decoration: TextDecoration.lineThrough,
                               color: Colors.green.shade300),
@@ -196,11 +196,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         padding: const EdgeInsets.only(right: 10),
                         child: Text(
                           "₹ ${widget.product.price}",
-                          style: TextStyle(
-                              fontFamily: "Merriweather",
-                              fontSize: 24,
+                          style: GoogleFonts.dmSans(
+                              fontSize: 20,
                               fontWeight: FontWeight.bold,
-                              color: Colors.green[400]),
+                              color: Colors.green[600]),
                         ),
                       )
                     ],
@@ -214,11 +213,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: Text(
-                widget.product.details,
-                style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey[700],
-                    fontFamily: "Merriweather"),
+                widget.product.details ?? "",
+                style: GoogleFonts.dmSans(
+                  fontSize: 16,
+                  color: Colors.grey[700],
+                ),
               ),
             ),
             SizedBox(
@@ -228,10 +227,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: Text(
                 "Benifits",
-                style: TextStyle(
-                    fontSize: 22,
-                    color: Colors.black,
-                    fontFamily: "Merriweather"),
+                style: GoogleFonts.dmSans(
+                  fontSize: 20,
+                  color: Colors.black,
+                ),
               ),
             ),
             SizedBox(
@@ -241,10 +240,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: Text(
                 widget.product.benifits ?? "",
-                style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey[700],
-                    fontFamily: "Merriweather"),
+                style: GoogleFonts.dmSans(
+                  fontSize: 16,
+                  color: Colors.grey[700],
+                ),
               ),
             ),
             SizedBox(
@@ -258,36 +257,36 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
   Container buildCount() {
     return Container(
-      height: 50,
-      width: 50,
+      height: 40,
+      width: 40,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Colors.black26)),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          color: Colors.black26,
+        ),
+      ),
       child: Column(
         children: <Widget>[
           Expanded(
               child: Center(
                   child: Text(widget.product.count.toString(),
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontFamily: "Merriweather",
-                          fontWeight: FontWeight.bold)))),
+                      style: GoogleFonts.dmSans(
+                          fontSize: 14, fontWeight: FontWeight.bold)))),
           Expanded(
               child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(7),
                   bottomRight: Radius.circular(7)),
-              color: Colors.green[400],
+              color: Colors.green[600],
             ),
             child: Center(
                 child: Text(
-              "In farms",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 10,
-                  fontFamily: "Merriweather",
-                  fontWeight: FontWeight.bold),
+              "In Stock",
+              style: GoogleFonts.dmSans(
+                color: Colors.white,
+                fontSize: 8,
+              ),
               textAlign: TextAlign.center,
             )),
           ))

@@ -26,12 +26,12 @@ class PackCard extends StatelessWidget {
               ShaderMask(
                 shaderCallback: (Rect bounds) {
                   return LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                       colors: [
-                        Colors.black,
-                        Colors.grey[400],
-                        Colors.grey[700]
+                        Colors.grey.shade800,
+                        Colors.grey.shade600,
+                        Colors.grey.shade800,
                       ]).createShader(bounds);
                 },
                 child: Container(

@@ -1,6 +1,7 @@
 import 'package:f2k/ui/pages/Product/ProductList.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CategoryCard extends StatelessWidget {
   final String image, title;
@@ -28,9 +29,8 @@ class CategoryCard extends StatelessWidget {
               height: 100,
               width: 100,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  gradient: LinearGradient(
-                      colors: colors, begin: Alignment.topRight)),
+                borderRadius: BorderRadius.circular(20),
+              ),
               child: Image.asset(
                 image,
                 height: 100,
@@ -41,8 +41,7 @@ class CategoryCard extends StatelessWidget {
             padding: const EdgeInsets.only(top: 4.0),
             child: Text(
               title,
-              style: TextStyle(
-                  fontFamily: "Merriweather", color: Colors.grey[700]),
+              style: GoogleFonts.dmSans(color: Colors.grey[800]),
             ),
           ),
         ],

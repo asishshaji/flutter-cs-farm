@@ -24,6 +24,7 @@ class ProductAdapter extends TypeAdapter<Product> {
       farmId: fields[7] as String,
       imageurl: fields[8] as String,
       crossprice: fields[9] as String,
+      offerType: fields[10] as String,
     );
   }
 
@@ -50,7 +51,9 @@ class ProductAdapter extends TypeAdapter<Product> {
       ..writeByte(8)
       ..write(obj.imageurl)
       ..writeByte(9)
-      ..write(obj.crossprice);
+      ..write(obj.crossprice)
+      ..writeByte(10)
+      ..write(obj.offerType);
   }
 
   @override

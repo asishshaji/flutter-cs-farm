@@ -4,6 +4,7 @@ import 'package:f2k/ui/pages/Sorry.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 
 import 'Product/ProductDetail.dart';
@@ -146,10 +147,10 @@ class _OrderScreenState extends State<OrderScreen> {
                   children: <Widget>[
                     Text(
                       order.product.name,
-                      style: TextStyle(
-                          fontFamily: "Merriweather",
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600),
+                      style: GoogleFonts.dmSans(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                     SizedBox(
                       height: 5,
@@ -159,8 +160,7 @@ class _OrderScreenState extends State<OrderScreen> {
                       children: <Widget>[
                         Text(
                           "Count: ",
-                          style: TextStyle(
-                            fontFamily: "Merriweather",
+                          style: GoogleFonts.dmSans(
                             fontSize: 18,
                           ),
                         ),
@@ -168,26 +168,22 @@ class _OrderScreenState extends State<OrderScreen> {
                           width: 10,
                         ),
                         Text(order.orderCount,
-                            style: TextStyle(
-                                fontFamily: "Merriweather",
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600)),
+                            style: GoogleFonts.dmSans(
+                                fontSize: 18, fontWeight: FontWeight.w600)),
                       ],
                     ),
                     RichText(
                         text: TextSpan(
                             text: 'Price',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18,
-                                fontFamily: "Merriweather"),
+                            style: GoogleFonts.dmSans(
+                              color: Colors.black,
+                              fontSize: 18,
+                            ),
                             children: <TextSpan>[
                           TextSpan(
                             text: "   ₹ ${priceList[index]}",
-                            style: TextStyle(
-                                fontFamily: "Merriweather",
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600),
+                            style: GoogleFonts.dmSans(
+                                fontSize: 18, fontWeight: FontWeight.w600),
                           )
                         ])),
                     Flexible(
@@ -240,11 +236,9 @@ class _OrderScreenState extends State<OrderScreen> {
       ),
       title: Text(
         "Orders",
-        style: TextStyle(
-            fontFamily: "Merriweather",
-            color: Colors.grey[700],
-            fontWeight: FontWeight.bold,
-            fontSize: 24),
+        style: GoogleFonts.dmSans(
+          color: Colors.grey[700],
+        ),
       ),
     );
   }

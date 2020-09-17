@@ -1,7 +1,8 @@
 import 'package:animations/animations.dart';
 import 'package:f2k/repos/model/Offers.dart';
-import 'package:f2k/ui/pages/OfferDetail.dart';
+import 'package:f2k/ui/pages/AdDetail.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Ads extends StatelessWidget {
   final Offer offer;
@@ -19,7 +20,7 @@ class Ads extends StatelessWidget {
       closedBuilder: (BuildContext c, VoidCallback action) =>
           buildCenter(screenWidth),
       openBuilder: (BuildContext c, VoidCallback action) =>
-          OfferDetail(offer: offer),
+          AdDetail(offer: offer),
       tappable: true,
     );
   }
@@ -33,12 +34,12 @@ class Ads extends StatelessWidget {
             ShaderMask(
               shaderCallback: (Rect bounds) {
                 return LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
                     colors: [
-                      Colors.black,
-                      Colors.grey[400],
-                      Colors.grey[700]
+                      Colors.grey.shade800,
+                      Colors.grey.shade600,
+                      Colors.grey.shade800,
                     ]).createShader(bounds);
               },
               child: Container(
@@ -55,12 +56,11 @@ class Ads extends StatelessWidget {
               padding: const EdgeInsets.only(top: 20, right: 130, left: 20),
               child: Text(
                 offer.title,
-                style: TextStyle(
-                    fontWeight: FontWeight.w800,
-                    letterSpacing: 1.2,
-                    color: Colors.white,
-                    fontFamily: "Merriweather",
-                    fontSize: 26),
+                style: GoogleFonts.dmSans(
+                  fontSize: 22,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             Positioned(
@@ -73,8 +73,11 @@ class Ads extends StatelessWidget {
                     color: Colors.white),
                 child: Text(
                   "See more >",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold, fontFamily: "Merriweather"),
+                  style: GoogleFonts.dmSans(
+                    fontSize: 12,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
                   textAlign: TextAlign.center,
                 ),
               ),

@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:f2k/blocs/productbloc/products_bloc.dart';
 import 'package:f2k/repos/model/Product.dart';
+import 'package:f2k/ui/pages/Home/Search.dart';
 import 'package:f2k/ui/pages/Orders.dart';
 import 'package:f2k/ui/pages/Product/ProductDetail.dart';
 import 'package:f2k/ui/pages/Sorry.dart';
@@ -10,6 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ProductListScreen extends StatefulWidget {
   final String category;
@@ -44,7 +46,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
               Icons.refresh,
               size: 26,
             ),
-            backgroundColor: Colors.green[400],
+            backgroundColor: Colors.green[600],
             onPressed: () {
               _productsBloc.add(ProductRefreshEvent(widget.category));
             },
@@ -66,11 +68,20 @@ class _ProductListScreenState extends State<ProductListScreen> {
               icon: Icon(
                 Icons.shopping_basket,
                 color: Colors.grey[700],
-                size: 26,
               ),
             ),
-            SizedBox(
-              width: 20,
+            IconButton(
+              onPressed: () {
+                Navigator.push(context, CupertinoPageRoute(builder: (
+                  BuildContext context,
+                ) {
+                  return SearchScreen();
+                }));
+              },
+              icon: Icon(
+                Icons.search,
+                color: Colors.grey[700],
+              ),
             ),
           ],
           leading: IconButton(
@@ -86,11 +97,9 @@ class _ProductListScreenState extends State<ProductListScreen> {
           ),
           title: Text(
             widget.category,
-            style: TextStyle(
-                fontFamily: "Merriweather",
-                color: Colors.grey[700],
-                fontWeight: FontWeight.bold,
-                fontSize: 24),
+            style: GoogleFonts.dmSans(
+              color: Colors.grey[700],
+            ),
           ),
         ),
         body: BlocBuilder<ProductsBloc, ProductsState>(
@@ -98,7 +107,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
             if (state is ProductLoadingState) {
               return Center(
                 child: CircularProgressIndicator(
-                  backgroundColor: Colors.green[400],
+                  backgroundColor: Colors.green[600],
                 ),
               );
             } else if (state is ProductLoadedState) {
@@ -113,7 +122,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
             } else {
               return Center(
                 child: CircularProgressIndicator(
-                  backgroundColor: Colors.green[400],
+                  backgroundColor: Colors.green[600],
                 ),
               );
             }
@@ -134,7 +143,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
       itemBuilder: (BuildContext context, int index) =>
           buildProductCard(products[index]),
       staggeredTileBuilder: (int index) =>
-          new StaggeredTile.count(1, index.isEven ? 1.3 : 1.2),
+          new StaggeredTile.count(1, index.isEven ? 1.2 : 1.2),
       mainAxisSpacing: 8,
       crossAxisSpacing: 8,
     );
@@ -173,13 +182,16 @@ class _ProductListScreenState extends State<ProductListScreen> {
                 ),
                 elevation: 4,
                 child: CachedNetworkImage(
-                    imageUrl: product.imageurl,
+                    imageUrl: product.count == 0
+                        ? "https://i.ibb.co/RSGh18N/soldout.png"
+                        : product.imageurl ??
+                            "https://images.unsplash.com/photo-1530797584131-115643783014?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1351&q=80",
                     fit: BoxFit.cover,
                     width: double.infinity,
                     progressIndicatorBuilder:
                         (context, url, downloadProgress) => Center(
                               child: CircularProgressIndicator(
-                                  backgroundColor: Colors.green[400],
+                                  backgroundColor: Colors.green[600],
                                   value: downloadProgress.progress),
                             )),
               ),
@@ -190,10 +202,11 @@ class _ProductListScreenState extends State<ProductListScreen> {
             child: Text(
               product.name,
               textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.white,
-                  fontFamily: "Merriweather"),
+              style: GoogleFonts.dmSans(
+                fontSize: 18,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           Positioned(

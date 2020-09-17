@@ -6,19 +6,15 @@ import 'package:http/http.dart' as http;
 
 class PackRepo {
   Future<List<dynamic>> getPacks() async {
-    List<dynamic> _packs = new List();
-
-    var response = await http.get(AppString.packs);
-
-    var jsonResponse = json.decode(response.body);
-
-    (jsonResponse as List).map((pack) {
-      Product product = Product.fromJson(pack);
-      _packs.add(product);
-    }).toList();
-
-    return _packs;
+    List<dynamic> products = new List();
+    var response = await http.get(AppString.productCatUrl + "Pack");
+    if (response.statusCode == 200) {
+      var jsonReponse = json.decode(response.body);
+      (jsonReponse as List).map((e) {
+        Product product = Product.fromJson(e);
+        products.add(product);
+      }).toList();
+    }
+    return products;
   }
-
-  makeOrder() async {}
 }

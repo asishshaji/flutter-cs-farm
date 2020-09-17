@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class BuildTextField extends StatelessWidget {
   const BuildTextField({
@@ -20,7 +21,7 @@ class BuildTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Theme(
       data: new ThemeData(
-        primaryColor: Colors.green[400],
+        primaryColor: Colors.green[600],
         primaryColorDark: Colors.greenAccent,
       ),
       child: Padding(
@@ -30,8 +31,9 @@ class BuildTextField extends StatelessWidget {
           width: width * 0.9,
           child: TextField(
             keyboardType: textInputType,
-            style:
-                TextStyle(color: Colors.grey[700], fontFamily: "Merriweather"),
+            style: GoogleFonts.dmSans(
+              color: Colors.grey[700],
+            ),
             decoration: InputDecoration(
                 labelText: hintText,
                 border: OutlineInputBorder(

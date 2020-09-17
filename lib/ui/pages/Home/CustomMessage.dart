@@ -63,7 +63,7 @@ class _CustomMessageState extends State<CustomMessage> {
               height: 40,
             ),
             RaisedButton(
-              color: Colors.green[400],
+              color: Colors.green[600],
               onPressed: () async {
                 if (_messageController.text.isNotEmpty &&
                     _nameController.text.isNotEmpty &&
@@ -80,7 +80,7 @@ class _CustomMessageState extends State<CustomMessage> {
                     "https://csf2k.herokuapp.com/",
                   );
 
-                  http.Response response = await http.post(
+                  await http.post(
                     AppString.customOrder,
                     body: customMessageModel.toJson(),
                     headers: {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ErrorSorry extends StatelessWidget {
   final String msg;
@@ -40,9 +41,8 @@ class ErrorSorry extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 30),
             child: Text(
               msg,
-              style: TextStyle(
-                fontFamily: "Merriweather",
-                fontSize: 26,
+              style: GoogleFonts.dmSans(
+                fontSize: 22,
               ),
               textAlign: TextAlign.center,
             ),

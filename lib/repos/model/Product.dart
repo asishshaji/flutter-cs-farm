@@ -24,18 +24,22 @@ class Product {
   String imageurl;
   @HiveField(9)
   String crossprice;
+  @HiveField(10)
+  String offerType;
 
-  Product(
-      {this.category,
-      this.sId,
-      this.name,
-      this.price,
-      this.count,
-      this.details,
-      this.benifits,
-      this.farmId,
-      this.imageurl,
-      this.crossprice});
+  Product({
+    this.category,
+    this.sId,
+    this.name,
+    this.price,
+    this.count,
+    this.details,
+    this.benifits,
+    this.farmId,
+    this.imageurl,
+    this.crossprice,
+    this.offerType,
+  });
 
   Map<String, dynamic> toMap() {
     return {
@@ -48,7 +52,8 @@ class Product {
       'benifits': benifits,
       'farmId': farmId,
       'imageurl': imageurl,
-      'crossprice': crossprice
+      'crossprice': crossprice,
+      'offerType': offerType,
     };
   }
 
@@ -56,16 +61,18 @@ class Product {
     if (map == null) return null;
 
     return Product(
-        category: map['category'],
-        sId: map['sId'],
-        name: map['name'],
-        price: map['price'],
-        count: map['count'],
-        details: map['details'],
-        benifits: map['benifits'],
-        farmId: map['farmId'],
-        imageurl: map['imageurl'],
-        crossprice: map['crossprice']);
+      category: map['category'],
+      sId: map['sId'],
+      name: map['name'],
+      price: map['price'],
+      count: map['count'],
+      details: map['details'],
+      benifits: map['benifits'],
+      farmId: map['farmId'],
+      imageurl: map['imageurl'],
+      crossprice: map['crossprice'],
+      offerType: map['offerType'],
+    );
   }
 
   Product.fromJson(Map<String, dynamic> json) {
@@ -79,6 +86,7 @@ class Product {
     farmId = json['farmId'];
     imageurl = json['imageurl'];
     crossprice = json['crossprice'];
+    offerType = json['offerType'];
   }
 
   Map<String, dynamic> toJson() {
@@ -93,6 +101,7 @@ class Product {
     data['farmId'] = this.farmId;
     data['imageurl'] = this.imageurl;
     data['crossprice'] = this.crossprice;
+    data['offerType'] = this.offerType;
     return data;
   }
 }
