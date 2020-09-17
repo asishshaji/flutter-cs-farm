@@ -1,13 +1,12 @@
 import 'dart:convert';
 
-import 'package:equatable/equatable.dart';
 import 'package:f2k/repos/model/Product.dart';
 import 'package:f2k/res/AppString.dart';
 import 'package:f2k/services/HiveService.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 
-class ProductRepository extends Equatable {
+class ProductRepository {
   Future<List<dynamic>> getProductsByCategory(String category) async {
     List<dynamic> products = List<dynamic>();
     bool exists = await HiveService.isExists(boxName: category);

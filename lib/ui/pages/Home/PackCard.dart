@@ -1,6 +1,7 @@
 import 'package:f2k/repos/model/Product.dart';
 import 'package:f2k/ui/pages/Product/ProductDetail.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class PackCard extends StatelessWidget {
   const PackCard({
@@ -37,19 +38,18 @@ class PackCard extends StatelessWidget {
                 child: Container(
                   height: 220,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      image: DecorationImage(
-                          image: NetworkImage(pack.imageurl),
-                          fit: BoxFit.cover),
-                      color: Colors.grey[100]),
+                    borderRadius: BorderRadius.circular(20),
+                    image: DecorationImage(
+                        image: NetworkImage(pack.imageurl), fit: BoxFit.cover),
+                    color: Colors.grey[100],
+                  ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 20, right: 130, left: 20),
                 child: Text(
                   pack.name,
-                  style: TextStyle(
-                    fontFamily: "Merriweather",
+                  style: GoogleFonts.dmSans(
                     fontSize: 22,
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -69,9 +69,11 @@ class PackCard extends StatelessWidget {
                     children: <Widget>[
                       Text(
                         "Know more",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontFamily: "Merriweather"),
+                        style: GoogleFonts.dmSans(
+                          fontSize: 12,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
                         textAlign: TextAlign.center,
                       ),
                       Icon(

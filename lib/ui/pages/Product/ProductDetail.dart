@@ -257,8 +257,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
   Container buildCount() {
     return Container(
-      height: 40,
-      width: 40,
+      height: 42,
+      width: 42,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
@@ -285,7 +285,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               "In Stock",
               style: GoogleFonts.dmSans(
                 color: Colors.white,
-                fontSize: 8,
+                fontSize: 10,
               ),
               textAlign: TextAlign.center,
             )),

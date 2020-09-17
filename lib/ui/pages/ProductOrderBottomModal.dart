@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
+import 'package:lottie/lottie.dart';
 import 'package:toast/toast.dart';
 
 class BottomModal extends StatefulWidget {
@@ -16,9 +17,13 @@ class BottomModal extends StatefulWidget {
   final dynamic getdata;
   final String userName;
 
-  BottomModal(
-      {Key key, this.orders, this.totalPrice, this.getdata, this.userName})
-      : super(key: key);
+  BottomModal({
+    Key key,
+    this.orders,
+    this.totalPrice,
+    this.getdata,
+    this.userName,
+  }) : super(key: key);
 
   @override
   _BottomModalState createState() => _BottomModalState();
@@ -150,10 +155,6 @@ class _BottomModalState extends State<BottomModal> {
                             borderRadius: BorderRadius.circular(7.0),
                           ),
                           onPressed: () async {
-                            setState(() {
-                              showProgress = !showProgress;
-                            });
-
                             if (_phoneController.text.isNotEmpty) {
                               if (widget.totalPrice > 100) {
                                 List<dynamic> orderJson = new List();
@@ -161,12 +162,19 @@ class _BottomModalState extends State<BottomModal> {
                                   Order order = elem as Order;
                                   orderJson.add(order);
                                 }
+
+                                final openBox = await Hive.openBox("Contact");
+                                openBox.put("name", _nameController.text);
+                                openBox.put("phone", _phoneController.text);
+                                openBox.put("address", _addressController.text);
+
                                 FinalOrder finalOrder = FinalOrder(
-                                    address: _addressController.text,
-                                    buyerName: _nameController.text,
-                                    phoneNumber: _phoneController.text,
-                                    message: _messageController.text,
-                                    userOrders: orderJson);
+                                  address: _addressController.text,
+                                  buyerName: _nameController.text,
+                                  phoneNumber: _phoneController.text,
+                                  message: _messageController.text,
+                                  userOrders: orderJson,
+                                );
                                 Toast.show(
                                     "Order is being placed, wait...", context,
                                     gravity: Toast.CENTER);
@@ -180,12 +188,13 @@ class _BottomModalState extends State<BottomModal> {
                                     headers: {
                                       'Content-type': 'application/json'
                                     });
-                                print(response.body);
 
                                 if (response.body
                                         .toString()
                                         .compareTo("Order placed") ==
                                     0) {
+                                  print("hey");
+
                                   setState(() {
                                     showProgress = !showProgress;
                                   });

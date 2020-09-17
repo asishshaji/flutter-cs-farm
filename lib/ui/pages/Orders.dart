@@ -20,7 +20,6 @@ class _OrderScreenState extends State<OrderScreen> {
   List<dynamic> orders = new List<dynamic>();
 
   List<double> priceList = new List();
-  String userName;
   double totalPrice = 0.0;
   bool showProgress = false;
 
@@ -30,11 +29,6 @@ class _OrderScreenState extends State<OrderScreen> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _getOrderFromHive();
-    });
-    FirebaseAuth.instance.currentUser().then((value) {
-      setState(() {
-        userName = value.displayName;
-      });
     });
   }
 
@@ -92,7 +86,7 @@ class _OrderScreenState extends State<OrderScreen> {
               orders: orders,
               totalPrice: totalPrice,
               getdata: _getOrderFromHive,
-              userName: userName)
+            )
           : null,
       appBar: buildAppBar(),
       body: Container(

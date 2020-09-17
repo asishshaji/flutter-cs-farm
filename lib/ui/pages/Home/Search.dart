@@ -56,13 +56,23 @@ class SearchScreen extends StatelessWidget {
                     return ProductDetailScreen(product: post);
                   }));
                 },
-                title: Text(post.name),
+                title: Text(
+                  post.name,
+                  style: GoogleFonts.dmSans(
+                    color: Colors.black,
+                  ),
+                ),
                 leading: Image.network(
                   post.imageurl,
                   width: 80,
                   height: 80,
                 ),
-                subtitle: Text("₹ ${post.price}"),
+                subtitle: Text(
+                  "₹ ${post.price}",
+                  style: GoogleFonts.dmSans(
+                    color: Colors.grey[700],
+                  ),
+                ),
               );
             },
           ),
