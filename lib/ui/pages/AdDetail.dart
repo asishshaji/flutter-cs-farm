@@ -1,10 +1,10 @@
 import 'package:f2k/repos/model/Offers.dart';
 import 'package:flutter/material.dart';
 
-class OfferDetail extends StatelessWidget {
+class AdDetail extends StatelessWidget {
   final Offer offer;
 
-  const OfferDetail({Key key, this.offer}) : super(key: key);
+  const AdDetail({Key key, this.offer}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
