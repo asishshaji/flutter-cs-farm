@@ -63,12 +63,21 @@ class SearchScreen extends StatelessWidget {
                   ),
                 ),
                 leading: Image.network(
-                  post.imageurl,
+                  post.count == 0
+                      ? "https://i.ibb.co/RSGh18N/soldout.png"
+                      : post.imageurl ??
+                          "https://images.unsplash.com/photo-1530797584131-115643783014?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1351&q=80",
                   width: 80,
                   height: 80,
                 ),
                 subtitle: Text(
                   "₹ ${post.price}",
+                  style: GoogleFonts.dmSans(
+                    color: Colors.grey[700],
+                  ),
+                ),
+                trailing: Text(
+                  post.count == 0 ? "Sold out" : "In store",
                   style: GoogleFonts.dmSans(
                     color: Colors.grey[700],
                   ),

@@ -231,7 +231,7 @@ class _OrderScreenState extends State<OrderScreen> {
       title: Text(
         "Orders",
         style: GoogleFonts.dmSans(
-          color: Colors.grey[700],
+          color: Colors.black,
         ),
       ),
     );

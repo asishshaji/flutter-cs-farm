@@ -139,8 +139,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             Hero(
                 tag: "${widget.product.sId}",
                 child: CachedNetworkImage(
-                  imageUrl: widget.product.imageurl ??
-                      "https://images.unsplash.com/photo-1530797584131-115643783014?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1351&q=80",
+                  imageUrl: widget.product.count == 0
+                      ? "https://i.ibb.co/RSGh18N/soldout.png"
+                      : widget.product.imageurl ??
+                          "https://images.unsplash.com/photo-1530797584131-115643783014?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1351&q=80",
                   imageBuilder: (context, imageProvider) => Container(
                     height: height * 0.4,
                     decoration: BoxDecoration(
