@@ -84,26 +84,6 @@ class _HomeState extends State<Home> {
           )
         ],
       ),
-      // drawer: CurvedDrawer(
-      //   color: Colors.white,
-      //   labelColor: Colors.black54,
-      //   width: 72.0,
-      //   items: <DrawerItem>[
-      //     DrawerItem(icon: Icon(Icons.perm_camera_mic)),
-      //     //Optional Label Text
-      //     DrawerItem(icon: Icon(Icons.ac_unit), label: "Messages")
-      //   ],
-      //   onTap: (newIndex) {
-      //     setState(() {
-      //       index = newIndex;
-      //     });
-      //     if (index == 0) {
-      //     } else if (index == 2) {
-      //       Navigator.of(context).push(MaterialPageRoute(
-      //           builder: (BuildContext context) => OrderScreen()));
-      //     }
-      //   },
-      // ),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
@@ -119,9 +99,23 @@ class _HomeState extends State<Home> {
             pincodes != null
                 ? Container(
                     padding: const EdgeInsets.all(14.0),
-                    child: Text(
-                      "Available at ${pincodes.join(",")}",
-                      style: GoogleFonts.dmSans(fontSize: 16),
+                    child: Row(
+                      children: [
+                        Text(
+                          "Currently available at ",
+                          style: GoogleFonts.dmSans(
+                            fontSize: 16,
+                            color: Colors.grey[800],
+                          ),
+                        ),
+                        Text(
+                          "${pincodes.join(", ")}",
+                          style: GoogleFonts.dmSans(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
                     ),
                   )
                 : const SizedBox(),
