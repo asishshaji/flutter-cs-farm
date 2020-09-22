@@ -1,12 +1,13 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:f2k/res/AppString.dart';
 import 'package:f2k/ui/pages/ProductOrderBottomModal.dart';
 import 'package:f2k/ui/pages/Sorry.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
-
 import 'Product/ProductDetail.dart';
 
 class OrderScreen extends StatefulWidget {
@@ -22,6 +23,7 @@ class _OrderScreenState extends State<OrderScreen> {
   List<double> priceList = new List();
   double totalPrice = 0.0;
   bool showProgress = false;
+  List<dynamic> pincodes = List();
 
   @override
   void initState() {
@@ -86,18 +88,20 @@ class _OrderScreenState extends State<OrderScreen> {
               orders: orders,
               totalPrice: totalPrice,
               getdata: _getOrderFromHive,
-            )
+              pincodes: pincodes)
           : null,
       appBar: buildAppBar(),
       body: Container(
-        child: orders.length != 0
-            ? ListView.builder(
-                itemCount: orders.length,
-                itemBuilder: (BuildContext ctxt, int index) {
-                  dynamic order = orders[index];
-                  return buildCard(width, context, order, index);
-                })
-            : ErrorSorry(msg: "You haven't added 🥑 to cart"),
+        child: orders == null
+            ? CircularProgressIndicator()
+            : orders.length != 0
+                ? ListView.builder(
+                    itemCount: orders.length,
+                    itemBuilder: (BuildContext ctxt, int index) {
+                      dynamic order = orders[index];
+                      return buildCard(width, context, order, index);
+                    })
+                : ErrorSorry(msg: "You haven't added 🥑 to cart"),
       ),
     );
   }

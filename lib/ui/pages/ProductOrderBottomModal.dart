@@ -7,15 +7,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
-import 'package:http/http.dart' as http;
-import 'package:lottie/lottie.dart';
+
 import 'package:toast/toast.dart';
+import 'package:http/http.dart' as http;
 
 class BottomModal extends StatefulWidget {
   final List<dynamic> orders;
   final double totalPrice;
   final dynamic getdata;
   final String userName;
+  final List<dynamic> pincodes;
 
   BottomModal({
     Key key,
@@ -23,6 +24,7 @@ class BottomModal extends StatefulWidget {
     this.totalPrice,
     this.getdata,
     this.userName,
+    this.pincodes,
   }) : super(key: key);
 
   @override
@@ -51,6 +53,7 @@ class _BottomModalState extends State<BottomModal> {
 
   getDetails() async {
     final openBox = await Hive.openBox("Contact");
+
     if (openBox.isNotEmpty) {
       setState(() {
         name = openBox.get("name");
@@ -193,8 +196,6 @@ class _BottomModalState extends State<BottomModal> {
                                         .toString()
                                         .compareTo("Order placed") ==
                                     0) {
-                                  print("hey");
-
                                   setState(() {
                                     showProgress = !showProgress;
                                   });

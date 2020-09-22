@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:curved_drawer/curved_drawer.dart';
 import 'package:f2k/blocs/offersbloc/offers_bloc.dart';
 import 'package:f2k/blocs/productbloc/products_bloc.dart';
 import 'package:f2k/repos/PackRepo.dart';
 import 'package:f2k/repos/ProductRepo.dart';
+import 'package:f2k/res/AppString.dart';
 import 'package:f2k/ui/pages/Home/CategoryList.dart';
 import 'package:f2k/ui/pages/Home/PackCard.dart';
 import 'package:f2k/ui/pages/Home/Search.dart';
@@ -15,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
+import 'package:http/http.dart' as http;
 
 class Home extends StatefulWidget {
   Home({Key key}) : super(key: key);
@@ -27,6 +31,7 @@ class _HomeState extends State<Home> {
   ProductsBloc _productsBloc;
   OffersBloc _offersBloc;
   int index = 0;
+  List<dynamic> pincodes;
 
   @override
   void initState() {
@@ -35,20 +40,19 @@ class _HomeState extends State<Home> {
     _offersBloc = BlocProvider.of<OffersBloc>(context);
     _offersBloc.add(GetOffers());
     _productsBloc.add(GetRandomProductStartEvent());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _getPincodes();
+    });
   }
 
-  List<DrawerItem> _drawerItems = <DrawerItem>[
-    DrawerItem(icon: Icon(Icons.home), label: "Home"),
-    DrawerItem(
-      icon: Icon(Icons.person_outline),
-      label: "Profile",
-    ),
-    DrawerItem(
-        icon: Icon(
-          Icons.shopping_cart,
-        ),
-        label: "Orders"),
-  ];
+  _getPincodes() async {
+    var response = await http.get(AppString.pincodes);
+    if (response.statusCode == 200) {
+      var jsonReponse = json.decode(response.body);
+      pincodes = jsonReponse as List;
+    }
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -109,6 +113,18 @@ class _HomeState extends State<Home> {
               height: 30,
             ),
             buildPackCarousel(),
+            const SizedBox(
+              height: 20,
+            ),
+            pincodes != null
+                ? Container(
+                    padding: const EdgeInsets.all(14.0),
+                    child: Text(
+                      "Available at ${pincodes.join(",")}",
+                      style: GoogleFonts.dmSans(fontSize: 16),
+                    ),
+                  )
+                : const SizedBox(),
             const SizedBox(
               height: 20,
             ),

@@ -6,4 +6,5 @@ class AppString {
   static String random = "http://csf2k.herokuapp.com/api/v1/product/random";
   static String customOrder = "http://csf2k.herokuapp.com/makecustomorder";
   static String search = "http://csf2k.herokuapp.com/search";
+  static String pincodes = "https://csf2k.herokuapp.com/pincodes";
 }
